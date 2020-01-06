@@ -1,11 +1,132 @@
 
 
-h1 {
-    color: Green;
-    text-align: center;
-    margin: auto;
-    font-size: 12em;
-    padding-top: 20%;
-  
+
+  @mixin border {
+    border: 2px solid black; 
   }
+  @mixin side-width {
+    min-width: 18em;
+    max-width: 19em;
+  }
+
+  @mixin order-width {
+    min-width: 23em;
+    max-width: 24em;
+    
+  }
+
+.main {
+  border: 2px solid red;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  width: 100%;
+  height: 100%;
+}
+.sidebar {
+  @include border;
+  @include side-width;
+
+  margin-top: 2px;
+  padding-bottom: 20px; 
+  height: 90;
+}
+
+.header-logo {
+  height: 10em;
   
+  @include side-width;
+  @include border;
+}
+
+.fixed-sidebar {
+  flex-grow: 1;
+  border: 8px solid green;
+  @include side-width();
+
+}
+
+.sticky {
+  position: fixed;
+}
+
+.border {
+  @include border;
+}
+
+.line-menu {
+  position: sticky;
+  border: 8px solid blue;
+  flex-grow: 5;
+  height: 100em;
+  min-width: 22em;
+}
+
+.menu-box {
+  @include border();
+  min-height: 15em;
+  min-width: 22em;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0.5em;
+}
+
+.detail-menu {
+  float: right;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  margin: 0em 0.5em;
+  padding-left: 1.5em;
+
+}
+
+.img {
+  min-width: 14em;
+  min-height: 14em;
+
+}
+
+.description {
+
+  width: 20em;
+}
+
+.dish-name {
+  margin-top: 3.5em;
+
+  
+}
+
+.price-qty {
+  display: flex;
+  margin-top: 6em;
+
+}
+
+.price {
+  margin-left: 3em;
+  margin-top: 0em;
+}
+
+.qty-box {
+  margin-left: 5em;
+}
+
+
+.order-line {
+  @include order-width();
+  flex-grow: 3;
+  border: 8px solid pink;
+  height: 100em;
+  
+
+}
+
+.list-order {
+  @include order-width();
+  min-height: 10em;
+  border: 5px solid yellow;
+  bottom: 0px;
+  
+}
