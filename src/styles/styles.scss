@@ -2,7 +2,7 @@
 
 
   @mixin border {
-    border: 2px solid black; 
+    border: 1px solid #cccccc; 
   }
   @mixin side-width {
     min-width: 18em;
@@ -16,34 +16,60 @@
   }
 
 .main {
-  border: 2px solid red;
+  border: 2px solid black;
   display: flex;
   flex-direction: row;
   align-items: stretch;
   width: 100%;
-  height: 100%;
+  min-height: 90em;
 }
 .sidebar {
-  @include border;
+
   @include side-width;
 
   margin-top: 2px;
   padding-bottom: 20px; 
-  height: 90;
+  
 }
 
 .header-logo {
   height: 10em;
   
   @include side-width;
-  @include border;
+
 }
 
 .fixed-sidebar {
   flex-grow: 1;
-  border: 8px solid green;
+  background-color: #1a1a1a;
+  //border: 8px solid green;
   @include side-width();
+  padding-left: 0.5em;
 
+}
+
+.sidebar-text {
+  color: #a6a6a6;
+  font-weight: bold;
+
+}
+
+.sidebar-text:hover {
+  color: #a6a6a6;
+  text-decoration: none;
+
+}
+
+.sidebar-text-box {
+  height: 2em;
+  margin: auto;
+  padding: 0.3em 2em;
+  
+
+}
+.sidebar-text-box:hover {
+  background-color: #333333;
+  
 }
 
 .sticky {
@@ -56,19 +82,28 @@
 
 .line-menu {
   position: sticky;
-  border: 8px solid blue;
+  //border: 8px solid blue;
   flex-grow: 5;
-  height: 100em;
+  min-height: 100em;
   min-width: 22em;
+  
 }
 
 .menu-box {
-  @include border();
+  //@include border();
+  background-color: #f8f8f8;
+  border: 1px solid #cccccc;
   min-height: 15em;
   min-width: 22em;
   display: flex;
   flex-wrap: wrap;
   padding: 0.5em;
+  margin-top: 0.2em;
+
+}
+
+.menu-box:hover {
+  background-color: #f2f2f2;
 }
 
 .detail-menu {
@@ -78,6 +113,7 @@
   flex-direction: column;
   margin: 0em 0.5em;
   padding-left: 1.5em;
+  padding-top: 0.5em;
 
 }
 
@@ -117,8 +153,8 @@
 .order-line {
   @include order-width();
   flex-grow: 3;
-  border: 8px solid pink;
-  height: 100em;
+  //border: 2px solid #cccccc;
+  min-height: 100em;
   
 
 }
@@ -126,7 +162,14 @@
 .list-order {
   @include order-width();
   min-height: 10em;
-  border: 5px solid yellow;
+  //border: 1px solid #cccccc;
   bottom: 0px;
+  padding: 1em;
   
+}
+
+.total-order {
+  //@include border();
+  top: 100px;
+  margin-top: 4em;
 }
