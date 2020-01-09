@@ -26,6 +26,20 @@ class App extends React.Component {
 					description: "Nasi, ayam bumbu bali, sambel, tahu dan tempe",
 					price: "40.000",
 					quantity: 0
+				},
+				{
+					image: "",
+					name: "Ayam Geprek",
+					description: "Nasi, ayam bumbu bali, sambel, tahu dan tempe",
+					price: "15.000",
+					quantity: 0
+				},
+				{
+					image: "",
+					name: "Ayam Kremes Medan",
+					description: "Nasi, ayam bumbu bali, sambel, tahu dan tempe",
+					price: "17.000",
+					quantity: 0
 				}
 			]
 		};
