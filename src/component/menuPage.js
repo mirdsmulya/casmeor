@@ -1,0 +1,40 @@
+
+
+
+import React from 'react';
+import Sidebar from '../common/Sidebar';
+import MenuBox from '../common/menuBox';
+
+
+const MenuPage = ({menu, minusQty, plusQty}) => {
+    return (
+        <div className="main">
+				<div className="fixed-sidebar">
+					<div className="sticky">
+					<div className="header-logo">LOGO</div>
+					<Sidebar />
+					</div>
+				</div>
+
+				<div className="line-menu">
+					Line Menu
+
+                    {menu.map(dataMenu =>
+                        <MenuBox key={dataMenu.name} dataMenu={dataMenu}
+                        plusQty={plusQty} minusQty={minusQty}
+                        />)
+                    }
+					
+				</div>
+
+				<div className="order-line">
+					Order Line
+					<div className="list-order sticky">
+						List Order
+					</div>
+				
+                </div>
+        </div>
+    );
+};
+export default MenuPage;
