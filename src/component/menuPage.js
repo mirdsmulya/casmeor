@@ -29,8 +29,11 @@ const MenuPage = ({menu, minusQty, plusQty}) => {
 
 				<div className="order-line">
 					Order Line
-					<div className="list-order sticky">
-						List Order
+					<div className="list-order sticky ">
+						Your order:
+                        <div className="total-order">
+                        <p>Total: Rp. 0 ,- </p>
+                        </div>
 					</div>
 				
                 </div>
