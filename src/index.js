@@ -3,40 +3,91 @@ import { render } from 'react-dom';
 import './styles/styles.scss';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../node_modules/toastr/build/toastr.min.css';
-import Sidebar from './common/Sidebar';
-import MenuBox from './common/menuBox';
+import MenuPage from './component/menuPage';
+import MenuApi from './api/listMenuApi';
 
 
 class App extends React.Component {
 	constructor(props, context) {
+		debugger;
 		super(props,context);
-		this.state = {};
+		this.state = {
+			menu: [
+				{
+					image: "",
+					name: "Ayam Taliwang Bakar",
+					description: "Nasi, ayam taliwang, sambel, tahu dan tempe",
+					price: "32.000",
+					quantity: 0
+				},
+				{
+					image: "",
+					name: "Ayam Bumbu Bali",
+					description: "Nasi, ayam bumbu bali, sambel, tahu dan tempe",
+					price: "40.000",
+					quantity: 0
+				}
+			]
+		};
+		debugger;
+		
+
 
 	}
 
-	render() {
-		return(
-			<div className="main">
-				<div className="fixed-sidebar">
-					<div className="sticky">
-					<div className="header-logo">LOGO</div>
-					<Sidebar />
-					</div>
-				</div>
-				<div className="line-menu">
-					Line Menu
-					<MenuBox />
-				</div>
-				<div className="order-line">
-					Order Line
-					
-					<div className="list-order sticky">
-						List Order
-					</div>
-				</div>
-				
+	componentWillMount() {
+		let menu = MenuApi.getAllMenu().then(
+			//this.setState({menu: Object.assign([], menu) }) 
+			
+			
+		)
+		
+		debugger;
+		//this.getAllData();
+	}
 
-			</div>
+	getAllData() {
+		let menu = MenuApi.getAllMenu();
+		//this.setState({menu: Object.assign([], menu) });
+		debugger;
+	}
+
+	increaseQuantity(event) {
+		let quantity = 0
+		let menu = Object.assign({}, this.state.menu);
+		console.log("from menu[quantity]",menu[quantity]);
+		menu[quantity] = menu[quantity] + 1;
+		console.log("increase");
+		
+		return this.setState({menu: menu});
+		
+		
+	}
+
+	decreaseQuantity(event) {
+		let quantity = 0
+		let menu = Object.assign({}, this.state.menu);
+		console.log("from menu[quantity]",menu[quantity]);
+		
+		if (menu[quantity] != 0) {
+			menu[quantity] = menu[quantity] - 1;
+			return this.setState({menu: menu});
+		}
+		
+
+	}
+
+
+	render() {
+		debugger;
+		console.log("From render",this.state.menu);
+		
+		return(
+			<MenuPage 
+				menu={this.state.menu}
+				plusQty={this.increaseQuantity.bind(this)} 	
+				minusQty={this.decreaseQuantity.bind(this)}
+			/>
 
 			);
 	}
