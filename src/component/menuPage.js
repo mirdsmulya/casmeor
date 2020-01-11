@@ -1,12 +1,10 @@
-
-
-
 import React from 'react';
 import Sidebar from '../common/Sidebar';
 import MenuBox from '../common/menuBox';
+import OrderList from '../common/orderList';
 
 
-const MenuPage = ({menu, onClick }) => {
+const MenuPage = ({menu, onClick, dataOrder, totalPrice}) => {
     return (
         <div className="main">
 				<div className="fixed-sidebar">
@@ -29,9 +27,13 @@ const MenuPage = ({menu, onClick }) => {
 				<div className="order-line">
 					Order Line
 					<div className="list-order sticky ">
-						Your order:
+						<h5>Your order:</h5>
+                        {dataOrder.map(data =>
+                            <OrderList key={data.name} data={data}
+                        />)}
+                       
                         <div className="total-order">
-                        <p>Total: Rp. 0 ,- </p>
+                            <p>Total:  {totalPrice}</p>
                         </div>
 					</div>
 				
