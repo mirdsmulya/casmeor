@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-const MenuBox = ({dataMenu, plusQty, minusQty} ) => {
+const MenuBox = ({dataMenu, onClick} ) => {
     return (
         <div className="menu-box"> 
             <div className="border img">Picture</div>
@@ -13,7 +13,11 @@ const MenuBox = ({dataMenu, plusQty, minusQty} ) => {
             </div>
             <div className="price-qty">
                 <h5 className="price "> {dataMenu.price} </h5>
-                <div className="qty-box "> <button onClick={minusQty}>-</button>  {dataMenu.quantity}  <button onClick={plusQty}>+</button> </div>
+                <div className="qty-box" >  <button onClick={(e) => onClick(e, "minus")} name={dataMenu.name}>-</button>  
+                                                {dataMenu.quantity}  
+                                            <button onClick={(e) => onClick(e, "plus")} name={dataMenu.name}>+</button> 
+                                            
+                </div>
             </div>
 
         </div>
