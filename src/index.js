@@ -44,7 +44,7 @@ class App extends React.Component {
 			]
 		};
 		debugger;
-		
+		this.updateQuantity = this.updateQuantity.bind(this);
 
 
 	}
@@ -52,10 +52,7 @@ class App extends React.Component {
 	componentWillMount() {
 		let menu = MenuApi.getAllMenu().then(
 			//this.setState({menu: Object.assign([], menu) }) 
-			
-			
-		)
-		
+		);
 		debugger;
 		//this.getAllData();
 	}
@@ -66,31 +63,28 @@ class App extends React.Component {
 		debugger;
 	}
 
-	increaseQuantity(event) {
-		let quantity = 0
-		let menu = Object.assign({}, this.state.menu);
-		console.log("from menu[quantity]",menu[quantity]);
-		menu[quantity] = menu[quantity] + 1;
-		console.log("increase");
-		
-		return this.setState({menu: menu});
-		
-		
-	}
-
-	decreaseQuantity(event) {
-		let quantity = 0
-		let menu = Object.assign({}, this.state.menu);
-		console.log("from menu[quantity]",menu[quantity]);
-		
-		if (menu[quantity] != 0) {
-			menu[quantity] = menu[quantity] - 1;
-			return this.setState({menu: menu});
+	updateQuantity(event, operation) {
+		const field = event.target.name;
+		let menu = Object.assign([], this.state.menu);
+		let result;
+		if (operation == "plus") {
+			result = this.quantityOperation(menu,field, 1);
+		} else {
+			result = this.quantityOperation(menu,field, -1);
 		}
-		
-
+		this.setState([], Object.assign({menu: result}));
 	}
 
+	quantityOperation(menu,field, operator) {
+		let dataIndex = menu.findIndex(a => a.name == field);
+		let newData = menu[dataIndex];
+		newData['quantity'] = newData['quantity'] + operator;
+		if (newData['quantity'] < 0) {
+			newData['quantity'] = 0;
+		}
+		menu.splice(dataIndex,1,newData);
+		return menu;
+	}
 
 	render() {
 		debugger;
@@ -99,8 +93,7 @@ class App extends React.Component {
 		return(
 			<MenuPage 
 				menu={this.state.menu}
-				plusQty={this.increaseQuantity.bind(this)} 	
-				minusQty={this.decreaseQuantity.bind(this)}
+				onClick={this.updateQuantity} 	
 			/>
 
 			);
