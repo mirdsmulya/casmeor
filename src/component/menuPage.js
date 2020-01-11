@@ -6,7 +6,7 @@ import Sidebar from '../common/Sidebar';
 import MenuBox from '../common/menuBox';
 
 
-const MenuPage = ({menu, minusQty, plusQty}) => {
+const MenuPage = ({menu, onClick }) => {
     return (
         <div className="main">
 				<div className="fixed-sidebar">
@@ -21,9 +21,8 @@ const MenuPage = ({menu, minusQty, plusQty}) => {
 
                     {menu.map(dataMenu =>
                         <MenuBox key={dataMenu.name} dataMenu={dataMenu}
-                        plusQty={plusQty} minusQty={minusQty}
-                        />)
-                    }
+                        onClick={onClick}
+                    />)}
 					
 				</div>
 
