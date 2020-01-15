@@ -32,7 +32,7 @@ export default {
       {test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, loader: 'url?limit=10000&mimetype=image/svg+xml'},
       {test: /\.jsx?$/,loader: 'babel-loader',exclude: /node_modules/},
       {test: /(\.css)$/, loader: "style-loader!css-loader"},
-      {test: /\.(jpg|png|gif|woff|woff2|eot|ttf|svg)(\?[a-z0-9=.]+)n?$/,loader: 'url-loader?limit=100000'},
+      {test: /\.(jpg|png|gif|woff|woff2|eot|ttf|svg)(\?[a-z0-9=.]+)?$/,loader: 'url-loader?limit=100000'},
       {test: /\.scss$/, loaders: ['style-loader', 'css-loader', 'sass-loader']}
 
 
