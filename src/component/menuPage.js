@@ -33,7 +33,7 @@ const MenuPage = ({menu, onClick, dataOrder, totalPrice}) => {
                         />)}
                        
                         <div className="total-order">
-                            <p>Total:  {totalPrice}</p>
+                            <p className="total-amount">Total:  {totalPrice}</p>
                         </div>
 					</div>
 				
