@@ -6,16 +6,31 @@ let menu = [
         image: "",
         name: "Ayam Taliwang Bakar",
         description: "Nasi, ayam taliwang, sambel, tahu dan tempe",
-        price: "32.000",
-        quantity: "0"
+        price: 32000,
+        quantity: 0
     },
     {
         image: "",
         name: "Ayam Bumbu Bali",
         description: "Nasi, ayam bumbu bali, sambel, tahu dan tempe",
-        price: "40.000",
-        quantity: "0"
+        price: 40000,
+        quantity: 0
+    },
+    {
+        image: "",
+        name: "Ayam Geprek",
+        description: "Nasi, ayam bumbu bali, sambel, tahu dan tempe",
+        price: 15000,
+        quantity: 0
+    },
+    {
+        image: "",
+        name: "Ayam Kremes Medan",
+        description: "Nasi, ayam bumbu bali, sambel, tahu dan tempe",
+        price: 17000,
+        quantity: 0
     }
+
 ];
 
 
@@ -27,6 +42,7 @@ class MenuApi {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
                 resolve(Object.assign([],menu));
+                debugger;
             },0);
         });
     }
