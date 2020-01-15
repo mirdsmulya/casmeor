@@ -118,8 +118,12 @@
 }
 
 .img {
-  min-width: 14em;
-  min-height: 14em;
+  width: 14em;
+  height: 14em;
+  //background-image: url("../images/AyamTaliwang.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 
 }
 
