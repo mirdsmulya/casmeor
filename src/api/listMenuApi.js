@@ -3,28 +3,28 @@
 
 let menu = [
     {
-        image: "",
+        image: "AyamTaliwang",
         name: "Ayam Taliwang Bakar",
         description: "Nasi, ayam taliwang, sambel, tahu dan tempe",
         price: 32000,
         quantity: 0
     },
     {
-        image: "",
+        image: "AyamBali",
         name: "Ayam Bumbu Bali",
         description: "Nasi, ayam bumbu bali, sambel, tahu dan tempe",
         price: 40000,
         quantity: 0
     },
     {
-        image: "",
+        image: "AyamGeprek",
         name: "Ayam Geprek",
         description: "Nasi, ayam bumbu bali, sambel, tahu dan tempe",
         price: 15000,
         quantity: 0
     },
     {
-        image: "",
+        image: "AyamKremes",
         name: "Ayam Kremes Medan",
         description: "Nasi, ayam bumbu bali, sambel, tahu dan tempe",
         price: 17000,
