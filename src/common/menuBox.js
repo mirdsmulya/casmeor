@@ -2,9 +2,13 @@ import React from 'react';
 
 
 const MenuBox = ({dataMenu, onClick} ) => {
+    const Images = require("../images/" + dataMenu.image + ".jpg");
     return (
         <div className="menu-box"> 
-            <div className="border img">Picture</div>
+            <div className="border">
+            <img className="img" src={Images} alt={dataMenu.name}></img>
+            </div>
+            
             <div className="detail-menu">
             <h4 className="dish-name "> {dataMenu.name}</h4>
                 <p className="description"> 
