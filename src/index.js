@@ -12,36 +12,7 @@ class App extends React.Component {
 		debugger;
 		super(props,context);
 		this.state = {
-			menu: [
-				{
-					image: "",
-					name: "Ayam Taliwang Bakar",
-					description: "Nasi, ayam taliwang, sambel, tahu dan tempe",
-					price: 32000,
-					quantity: 0
-				},
-				{
-					image: "",
-					name: "Ayam Bumbu Bali",
-					description: "Nasi, ayam bumbu bali, sambel, tahu dan tempe",
-					price: 40000,
-					quantity: 0
-				},
-				{
-					image: "",
-					name: "Ayam Geprek",
-					description: "Nasi, ayam bumbu bali, sambel, tahu dan tempe",
-					price: 15000,
-					quantity: 0
-				},
-				{
-					image: "",
-					name: "Ayam Kremes Medan",
-					description: "Nasi, ayam bumbu bali, sambel, tahu dan tempe",
-					price: 17000,
-					quantity: 0
-				}
-			],
+			menu: [],
 			dataOrder: [],
 			totalPrice: 0
 
@@ -50,17 +21,13 @@ class App extends React.Component {
 		this.updateQuantity = this.updateQuantity.bind(this);
 	}
 
-	componentWillMount() {
-		let menu = MenuApi.getAllMenu().then(
-			//this.setState({menu: Object.assign([], menu) }) 
-		);
-		debugger;
-		//this.getAllData();
-	}
-
-	getAllData() {
-		let menu = MenuApi.getAllMenu();
-		//this.setState({menu: Object.assign([], menu) });
+	componentDidMount() {
+		
+		MenuApi.getAllMenu().then( (menu) => {
+			this.setState({menu: menu});
+		});
+			
+		
 		debugger;
 	}
 
@@ -74,6 +41,7 @@ class App extends React.Component {
 			result = this.quantityOperation(menu,field, -1);
 		}
 		this.setState([], Object.assign({menu: result}));
+		debugger;
 		
 	}
 
@@ -89,14 +57,17 @@ class App extends React.Component {
 		
 		this.addToOrderList(field, tempQuantity, newData);
 		menu.splice(dataIndex,1,newData);
+		let cal = () => this.calculateTotalPrice();
 		this.calculateTotalPrice();
+		let total = this.state.dataOrder
+		debugger;
 		return menu;
 	}
 
 	addToOrderList(field, tempQuantity, newData) {
 		let dataOrder = Object.assign([], this.state.dataOrder);
 		let dataIndex =	dataOrder.findIndex(a => a.name == field );
-		
+		debugger;
 		if ( dataIndex < 0) {
 			if (tempQuantity == 0 && newData['quantity'] == 1){
 				dataOrder.splice(0,0, newData);
@@ -116,21 +87,29 @@ class App extends React.Component {
 	}
 
 	calculateTotalPrice() {
-		let dataOrder = Object.assign([], this.state.dataOrder);
-		let lengthOrder = dataOrder.length;
-		let totalPrice =0;
-		for (let i=0; i < lengthOrder; i++) {
-			let menu = dataOrder[i];
-			let totalOneMenu = menu['quantity'] * menu['price']
-			totalPrice = totalPrice + totalOneMenu;	
-		}
-		this.setState({totalPrice: totalPrice});
+		setTimeout( () => {
+			let dataOrder = Object.assign([], this.state.dataOrder);
+			let lengthOrder = dataOrder.length;
+			let totalPrice =0;
+			for (let i=0; i < lengthOrder; i++) {
+				let menu = dataOrder[i];
+				let totalOneMenu = menu['quantity'] * menu['price']
+				totalPrice = totalPrice + totalOneMenu;	
+			}
+			this.setState({totalPrice: totalPrice});
+			debugger;
+
+		},0);
+		
+		debugger;
 	}
 
 	render() {
 		debugger;
 		console.log("From render",this.state.menu);
 		console.log("dataOrderState", this.state.dataOrder);
+		console.log("totalAmount", this.state.totalPrice);
+		
 		
 		
 		return(
