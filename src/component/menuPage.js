@@ -2,23 +2,21 @@ import React from 'react';
 import Sidebar from '../common/Sidebar';
 import MenuBox from '../common/menuBox';
 import OrderList from '../common/orderList';
+import MenuInput from './MenuInput';
 
 
-const MenuPage = ({menu, onClick, dataOrder, totalPrice}) => {
+const MenuPage = ({menu, onClick, dataOrder, totalPrice, display, hideAction, hideButton, deleteButton, onChange, newMenu, saveButton}) => {
     return (
         <div className="main">
-				<div className="fixed-sidebar">
-					<div className="sticky">
-					<div className="header-logo">LOGO</div>
-					<Sidebar />
-					</div>
-				</div>
-
+				
+				<Sidebar onClick={hideAction}/>
 				<div className="line-menu">
 					Line Menu
-
+                    <MenuInput display={display} onChange={onChange} newMenu={newMenu} saveButton={saveButton}/>
                     {menu.map(dataMenu =>
                         <MenuBox key={dataMenu.name} dataMenu={dataMenu}
+                        hide={hideButton}
+                        deleteButton={deleteButton}
                         onClick={onClick}
                     />)}
 					
