@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-const MenuBox = ({dataMenu, onClick} ) => {
+const MenuBox = ({dataMenu, onClick,hide, deleteButton} ) => {
     const Images = require("../images/" + dataMenu.image + ".jpg");
     return (
         <div className="menu-box"> 
@@ -23,6 +23,7 @@ const MenuBox = ({dataMenu, onClick} ) => {
                                             
                 </div>
             </div>
+            <button className={hide} onClick={deleteButton} name={dataMenu.name}>Delete</button>
 
         </div>
     );
