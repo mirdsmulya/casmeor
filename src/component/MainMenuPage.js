@@ -9,11 +9,18 @@ class App extends React.Component {
 		this.state = {
 			menu: [],
 			dataOrder: [],
-			totalPrice: 0
+            totalPrice: 0,
+            display:"hide",
+            button:"hide",
+            newMenu: {image: "AyamKremes", name:"", description:"", price:0, quantity:0}
 
 		};
 		debugger;
-		this.updateQuantity = this.updateQuantity.bind(this);
+        this.updateQuantity = this.updateQuantity.bind(this);
+        this.showAdminMenu = this.showAdminMenu.bind(this);
+        this.deleteButton = this.deleteButton.bind(this);
+        this.saveButton = this.saveButton.bind(this);
+        this.menuInputChange = this.menuInputChange.bind(this);
 	}
 
 	componentDidMount() {
@@ -97,13 +104,57 @@ class App extends React.Component {
 		},0);
 		
 		debugger;
-	}
+    }
+    
+    showAdminMenu(event) {
+        
+        let button = event.target.name;
+        if (button == "admin") {
+            this.setState({display: "menu-box-input"});
+            this.setState({button:"btn btn-danger delete-button"});
+            return button
+        }
+        this.setState({display: "hide"});
+        this.setState({button:"hide"});
+        debugger;
+    }
+
+    deleteButton(event) {
+        const field = event.target.name;
+        MenuApi.deleteMenu(field).then( (menu) => {
+            this.setState({menu: menu});
+            debugger;
+            
+        });
+        debugger;
+    }
+
+    saveButton() {
+        let newMenu = Object.assign({}, this.state.newMenu);
+        MenuApi.saveMenu(newMenu).then( (newMenu) => {
+            this.setState({menu: newMenu});
+            debugger;
+        });
+        debugger;
+
+
+    }
+
+    menuInputChange(event) {
+        const field = event.target.name;
+        let newMenu = Object.assign({}, this.state.newMenu)
+        newMenu[field] = event.target.value;
+        return this.setState({newMenu: newMenu});
+
+    }
 
 	render() {
 		debugger;
 		console.log("From render",this.state.menu);
 		console.log("dataOrderState", this.state.dataOrder);
-		console.log("totalAmount", this.state.totalPrice);
+        console.log("totalAmount", this.state.totalPrice);
+        console.log(this.state.display);
+        
 		
 		
 		
@@ -112,7 +163,14 @@ class App extends React.Component {
 				menu={this.state.menu}
 				onClick={this.updateQuantity} 	
 				dataOrder={this.state.dataOrder}
-				totalPrice={this.state.totalPrice}
+                totalPrice={this.state.totalPrice}
+                display={this.state.display}
+                hideAction={this.showAdminMenu}
+                hideButton={this.state.button}
+                deleteButton={this.deleteButton}
+                onChange={this.menuInputChange}
+                newMenu={this.state.newMenu}
+                saveButton={this.saveButton}
 			/>
 
 			);
