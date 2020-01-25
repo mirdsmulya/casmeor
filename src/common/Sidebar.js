@@ -1,24 +1,42 @@
 
 import React from 'react';
 import { render } from 'react-dom';
-import { Link, IndexLink } from 'react-router-dom';
+import { Link, IndexLink } from 'react-router';
 
-const Sidebar = ({onClick}) => {
+const Sidebar = () => {
     return (
  
         <div className="fixed-sidebar">
 				<div className="sticky">
 				<div className="header-logo">LOGO</div>
                      <div className="sidebar">
-                            <div className="sidebar-text-box">
-                                <Link  activeClassName="active" className="sidebar-text" onClick={onClick} name="admin" >Administrator</Link>
-                            </div>
-                            <div className="sidebar-text-box">
-                                <Link to="/"  activeClassName="active" className="sidebar-text" onClick={onClick} name="menu"> Menu and Order</Link>
-                            </div>
-                            <div className="sidebar-text-box">
-                                <Link to="cashier" activeClassName="active" className="sidebar-text" > Cashier</Link>
-                            </div>
+                            
+                            
+                    <IndexLink to="/"  activeClassName="active" className="sidebar-text" > 
+                    <div className="sidebar-text-box">Menu and Order</div>
+                    </IndexLink>
+                
+                            
+                            <div className="setting-bar">
+                                <div className="sidebar-text-box-dd">
+                                    <div to="/setting" activeClassName="active" className="sidebar-text    "  >Settings</div>
+                                 </div>
+                                    <div className="dropdown-content">
+                                            <Link to="/account" activeClassName="active" className="sidebar-text" >
+                                            <li className="sidebar-text-box">Account </li>
+                                            </Link>
+                                       
+                                        
+                                            <Link to="/setting" activeClassName="active" className="sidebar-text" >
+                                            <li className="sidebar-text-box"> Menu  </li>
+                                            </Link>
+                                       
+                                    </div>
+                                </div>
+                                <Link to="/cashier" activeClassName="active" className="sidebar-text" > 
+                                <div className="sidebar-text-box">Cashier</div>
+                                </Link>
+                            
                 </div>
             </div>
         </div>
