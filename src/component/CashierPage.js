@@ -1,11 +1,103 @@
 import React from 'react';
 import Sidebar from '../common/Sidebar';
+import OrderBoard from './orderBoard';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import * as menuAction from '../actions/menuAction';
 
-const CashierPage = () => {
-    return(
-        <div className="main">
-			<Sidebar/>
-        </div>
-    );
-};
-export default CashierPage;
+
+class CashierPage extends React.Component {
+    constructor(props, context) {
+        super(props, context);
+        this.state = {
+            dataOrder: [],
+            totalPrice: 0
+        };
+
+    }
+
+    componentWillReceiveProps(nextProps) {
+		if (this.props.orders !== nextProps.orders) {
+			this.setState({dataOrder: Object.assign({}, nextProps.orders)});
+		}
+		debugger;
+	}
+
+    calculateTotalPrice() {
+		setTimeout( () => {
+			let dataOrder = Object.assign([], this.state.dataOrder);
+			let lengthOrder = dataOrder.length;
+			let totalPrice =0;
+			for (let i=0; i < lengthOrder; i++) {
+				let menu = dataOrder[i];
+				let totalOneMenu = menu['quantity'] * menu['price'];
+				totalPrice = totalPrice + totalOneMenu;	
+            }
+            
+            if (totalPrice == 0) {
+                this.setState({order: 'hide'});
+            }
+            //this.props.orderAction.saveOrder(Object.assign([], this.state.dataOrder));
+
+
+			this.setState({totalPrice: totalPrice});
+			debugger;
+
+		},0);
+		
+		debugger;
+    }
+
+
+
+    render() {
+        console.log(this.state.dataOrder);
+        console.log(this.props.order);
+        console.log(this.props.menu);
+        
+        
+        
+        debugger;
+        
+        return(
+            <div className="main">
+                <Sidebar/>
+                <OrderBoard
+                    hideOrder="cashier-line"
+                    dataOrder={this.props.order}
+                    totalPrice={this.state.totalPrice}
+                    orderLine="" 
+                />
+            </div>
+        );
+    }
+
+    
+}
+   
+
+export function mapStateToProps(state,ownProps) {
+    
+    let order = state.orders;
+    let menus = state.menus;
+    debugger;
+    return {
+        order: order,
+        menu: menus
+        
+    };
+    
+}
+
+export function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(menuAction, dispatch)
+        
+    };
+    
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CashierPage);
+
+
+
