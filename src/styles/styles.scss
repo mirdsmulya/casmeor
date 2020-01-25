@@ -5,13 +5,19 @@
     border: 1px solid #cccccc; 
   }
   @mixin side-width {
-    min-width: 18em;
+    min-width: 19em;
     max-width: 19em;
   }
 
   @mixin order-width {
     min-width: 23em;
     max-width: 24em;
+    
+  }
+
+  @mixin line-menu-width {
+    min-height: 100em;
+    min-width: 22em;
     
   }
 
@@ -44,7 +50,7 @@
   background-color: #1a1a1a;
   //border: 8px solid green;
   @include side-width();
-  padding-left: 0.5em;
+
 
 }
 
@@ -54,23 +60,69 @@
 
 }
 
+.setting-bar {
+  height: 2em;
+  margin: auto;
+  display: inline-block;
+  padding: 0.3em 2em;
+  
+}
+
+.dropdown-content {
+  display: none;
+  position: relative;
+
+  margin: auto;
+
+}
+
+.setting-bar:hover {
+  background-color: #333333;
+
+}
+
+.setting-bar:hover .dropdown-content {
+  display: block;
+
+
+}
+
+.sidebar-setting-box {
+  height: 2em;
+  margin: auto;
+  padding: 0.3em 2em;
+  display: none;
+
+}
+
+
 .sidebar-text:hover {
   color: #a6a6a6;
   text-decoration: none;
 
 }
 
+
 .sidebar-text-box {
   height: 2em;
   margin: auto;
   padding: 0.3em 2em;
+  cursor: pointer;
   
 
 }
-.sidebar-text-box:hover {
+.sidebar-text-box:hover  {
   background-color: #333333;
   
 }
+
+.sidebar-text-box-dd {
+  height: 2em;
+  width: 15em;
+  cursor: pointer;
+}
+
+
 
 .sticky {
   position: fixed;
@@ -84,8 +136,7 @@
   position: sticky;
   //border: 8px solid blue;
   flex-grow: 5;
-  min-height: 100em;
-  min-width: 22em;
+  @include line-menu-width();
   
 }
 
@@ -95,6 +146,7 @@
   border: 1px solid #cccccc;
   min-height: 15em;
   min-width: 22em;
+  //max-width: 58em;
   display: flex;
   flex-wrap: wrap;
   padding: 0.5em;
@@ -108,6 +160,7 @@
   border: 1px solid #cccccc;
   min-height: 15em;
   min-width: 22em;
+  //max-width: 58em;
   display: flex;
   flex-wrap: wrap;
   padding: 0.5em;
@@ -220,4 +273,15 @@
 .total-amount {
   font-weight: bold;
 
+}
+
+.cashier-line {
+  @include border();
+  @include line-menu-width();
+
+}
+
+.manage-account {
+  min-width: 40em;
+  padding: 9em 7em;
 }
