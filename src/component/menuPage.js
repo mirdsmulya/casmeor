@@ -3,16 +3,16 @@ import Sidebar from '../common/Sidebar';
 import MenuBox from '../common/menuBox';
 import OrderList from '../common/orderList';
 import MenuInput from './MenuInput';
+import OrderBoard from './orderBoard';
 
 
-const MenuPage = ({menu, onClick, dataOrder, totalPrice, display, hideAction, hideButton, deleteButton, onChange, newMenu, saveButton}) => {
+const MenuPage = ({uploadTextButton, menu, onClick, dataOrder, totalPrice, display, hideAction, hideButton, deleteButton, onChange, newMenu, saveButton, hideOrder, upload}) => {
     return (
         <div className="main">
 				
-				<Sidebar onClick={hideAction}/>
+				<Sidebar />
 				<div className="line-menu">
-					Line Menu
-                    <MenuInput display={display} onChange={onChange} newMenu={newMenu} saveButton={saveButton}/>
+                    <MenuInput display={display} uploadTextButton={uploadTextButton} onChange={onChange} newMenu={newMenu} saveButton={saveButton} upload={upload}/>
                     {menu.map(dataMenu =>
                         <MenuBox key={dataMenu.name} dataMenu={dataMenu}
                         hide={hideButton}
@@ -22,20 +22,12 @@ const MenuPage = ({menu, onClick, dataOrder, totalPrice, display, hideAction, hi
 					
 				</div>
 
-				<div className="order-line">
-					Order Line
-					<div className="list-order sticky ">
-						<h5>Your order:</h5>
-                        {dataOrder.map(data =>
-                            <OrderList key={data.name} data={data}
-                        />)}
-                       
-                        <div className="total-order">
-                            <p className="total-amount">Total:  {totalPrice}</p>
-                        </div>
-					</div>
-				
-                </div>
+				<OrderBoard 
+                    hideOrder={hideOrder}
+                    dataOrder={dataOrder}
+                    totalPrice={totalPrice}
+                    orderLine="order-line"
+                />
         </div>
     );
 };

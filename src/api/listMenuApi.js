@@ -62,7 +62,7 @@ class MenuApi {
     static saveMenu(newMenu) {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
-                menu.push(newMenu);
+                menu = [newMenu, ...menu];
                 resolve(Object.assign([],menu));
                 debugger;
             },0);

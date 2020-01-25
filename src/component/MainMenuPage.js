@@ -1,38 +1,37 @@
 import React from 'react';
 import MenuPage from '../component/menuPage';
 import MenuApi from '../api/listMenuApi';
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+import * as menuAction from '../actions/menuAction';
+import * as orderAction from '../actions/orderAction';
 
-class App extends React.Component {
+
+class MainMenuPage extends React.Component {
 	constructor(props, context) {
 		debugger;
 		super(props,context);
 		this.state = {
-			menu: [],
+			menu: this.props.menus,
 			dataOrder: [],
             totalPrice: 0,
             display:"hide",
             button:"hide",
-            newMenu: {image: "AyamKremes", name:"", description:"", price:0, quantity:0}
+            newMenu: {image: "AyamKremes", name:"", description:"", price:0, quantity:0},
+            order: "hide "
 
 		};
 		debugger;
-        this.updateQuantity = this.updateQuantity.bind(this);
-        this.showAdminMenu = this.showAdminMenu.bind(this);
-        this.deleteButton = this.deleteButton.bind(this);
-        this.saveButton = this.saveButton.bind(this);
-        this.menuInputChange = this.menuInputChange.bind(this);
-	}
+        this.updateQuantity = this.updateQuantity.bind(this);	}
 
 	componentDidMount() {
-		
+
 		MenuApi.getAllMenu().then( (menu) => {
 			this.setState({menu: menu});
 		});
-			
-		
 		debugger;
-	}
-
+    }
+    
 	updateQuantity(event, operation) {
 		const field = event.target.name;
 		let menu = Object.assign([], this.state.menu);
@@ -42,7 +41,7 @@ class App extends React.Component {
 		} else {
 			result = this.quantityOperation(menu,field, -1);
 		}
-		this.setState([], Object.assign({menu: result}));
+		this.setState({menu: result});
 		debugger;
 		
 	}
@@ -59,9 +58,7 @@ class App extends React.Component {
 		
 		this.addToOrderList(field, tempQuantity, newData);
 		menu.splice(dataIndex,1,newData);
-		let cal = () => this.calculateTotalPrice();
 		this.calculateTotalPrice();
-		let total = this.state.dataOrder
 		debugger;
 		return menu;
 	}
@@ -73,7 +70,8 @@ class App extends React.Component {
 		if ( dataIndex < 0) {
 			if (tempQuantity == 0 && newData['quantity'] == 1){
 				dataOrder.splice(0,0, newData);
-				this.setState({dataOrder: dataOrder});			
+                this.setState({dataOrder: dataOrder});
+                this.setState({order: 'list-order sticky'});			
 			}
 
 		} else {
@@ -83,9 +81,12 @@ class App extends React.Component {
 			}
 			if (tempQuantity == 1 && newData['quantity'] == 0) {
 				dataOrder.splice(dataIndex,1);
-				this.setState({dataOrder: dataOrder});
+                this.setState({dataOrder: dataOrder});
+                
 			}
-		}
+        }
+        
+        
 	}
 
 	calculateTotalPrice() {
@@ -95,9 +96,25 @@ class App extends React.Component {
 			let totalPrice =0;
 			for (let i=0; i < lengthOrder; i++) {
 				let menu = dataOrder[i];
-				let totalOneMenu = menu['quantity'] * menu['price']
+				let totalOneMenu = menu['quantity'] * menu['price'];
 				totalPrice = totalPrice + totalOneMenu;	
-			}
+            }
+            
+            if (totalPrice == 0) {
+                this.setState({order: 'hide'});
+            }
+            //this.props.orderAction.saveOrder(dataOrder);
+            let res = [
+                {
+                    image: "AyamTaliwang",
+                    name: "Ayam Taliwang Bakar",
+                    description: "Nasi, ayam taliwang",
+                    price: 32000,
+                    quantity: 2
+                }
+            ];
+            
+            this.saveOrder();
 			this.setState({totalPrice: totalPrice});
 			debugger;
 
@@ -105,59 +122,22 @@ class App extends React.Component {
 		
 		debugger;
     }
-    
-    showAdminMenu(event) {
-        
-        let button = event.target.name;
-        if (button == "admin") {
-            this.setState({display: "menu-box-input"});
-            this.setState({button:"btn btn-danger delete-button"});
-            return button
-        }
-        this.setState({display: "hide"});
-        this.setState({button:"hide"});
+
+    saveOrder() {
+        let order = Object.assign({}, this.state.dataOrder);
+        //this.props.orderAction.saveOrder(order);
         debugger;
     }
 
-    deleteButton(event) {
-        const field = event.target.name;
-        MenuApi.deleteMenu(field).then( (menu) => {
-            this.setState({menu: menu});
-            debugger;
-            
-        });
-        debugger;
-    }
-
-    saveButton() {
-        let newMenu = Object.assign({}, this.state.newMenu);
-        MenuApi.saveMenu(newMenu).then( (newMenu) => {
-            this.setState({menu: newMenu});
-            debugger;
-        });
-        debugger;
-
-
-    }
-
-    menuInputChange(event) {
-        const field = event.target.name;
-        let newMenu = Object.assign({}, this.state.newMenu)
-        newMenu[field] = event.target.value;
-        return this.setState({newMenu: newMenu});
-
-    }
 
 	render() {
 		debugger;
 		console.log("From render",this.state.menu);
 		console.log("dataOrderState", this.state.dataOrder);
         console.log("totalAmount", this.state.totalPrice);
-        console.log(this.state.display);
+        console.log(this.props.order);
         
-		
-		
-		
+
 		return(
 			<MenuPage 
 				menu={this.state.menu}
@@ -165,16 +145,34 @@ class App extends React.Component {
 				dataOrder={this.state.dataOrder}
                 totalPrice={this.state.totalPrice}
                 display={this.state.display}
-                hideAction={this.showAdminMenu}
-                hideButton={this.state.button}
-                deleteButton={this.deleteButton}
-                onChange={this.menuInputChange}
-                newMenu={this.state.newMenu}
-                saveButton={this.saveButton}
+                hideButton={this.state.button}       
+                newMenu={this.state.newMenu}     
+                hideOrder={this.state.order}
 			/>
 
 			);
 	}
 }
 
-export default App;
+export function mapStateToProps(state,ownProps) {
+    let order = state.orders;
+    let menus = state.menus;
+    debugger;
+    return {
+        menus: state.menus,
+        order: state.orders
+        
+    };
+    
+}
+
+export function mapDispatchToProps(dispatch) {
+    return {
+        actions: bindActionCreators(menuAction, dispatch),
+        orderAction: bindActionCreators(orderAction, dispatch)
+        
+    };
+    
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(MainMenuPage);

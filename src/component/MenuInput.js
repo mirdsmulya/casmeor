@@ -2,14 +2,23 @@
 import React, { useState } from 'react';
 import TexInput from '../common/textInput';
 import Sidebar from '../common/Sidebar';
+import ImageUploader from 'react-images-upload';
 
-const MenuInput = ({onChange, display, newMenu, saveButton}) => {
+const MenuInput = ({uploadTextButton, onChange, display, newMenu, saveButton, upload}) => {
    
     debugger;
     return(
         <div className={display} >
             <div className="border img">
-                <button className="center">Upload photo</button>
+            <ImageUploader 
+                    withIcon={false}
+                    buttonText={uploadTextButton}
+                    className="center"
+                    label=""
+                    onChange={upload}
+                    singleImage={true}
+                />
+                
             </div>
 
             <div className="detail-menu  ">
