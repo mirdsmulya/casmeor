@@ -8,7 +8,7 @@ export function loadMenuSuccess(menus) {
 }
 
 export function saveMenuSuccess(menus) {
-    return { tyep: types.SAVE_MENU_SUCCESS, menus};
+    return { type: types.SAVE_MENU_SUCCESS, menus};
     
 }
 
@@ -29,9 +29,9 @@ export function loadMenu() {
     };  
 }
 
-export function saveMenu() {
+export function saveMenu(newMenu) {
     return function(dispatch) {
-        return MenuApi.saveMenu().then( menus => {
+        return MenuApi.saveMenu(newMenu).then( menus => {
             dispatch(saveMenuSuccess(menus));
         }).catch(error => {
             throw(error);
@@ -42,9 +42,9 @@ export function saveMenu() {
 }
 
 
-export function deleteMenu() {
+export function deleteMenu(name) {
     return function(dispatch) {
-        return MenuApi.deleteMenu().then( menus => {
+        return MenuApi.deleteMenu(name).then( menus => {
             dispatch(deleteMenuSuccess(menus));
         }).catch(error => {
             throw(error);
