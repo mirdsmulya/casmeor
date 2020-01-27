@@ -6,7 +6,7 @@ import MenuInput from './MenuInput';
 import OrderBoard from './orderBoard';
 
 
-const MenuPage = ({uploadTextButton, menu, onClick, dataOrder, totalPrice, display, hideAction, hideButton, deleteButton, onChange, newMenu, saveButton, hideOrder, upload}) => {
+const MenuPage = ({confirmOrder, uploadTextButton, menu, onClick, dataOrder, totalPrice, display, hideAction, hideButton, deleteButton, onChange, newMenu, saveButton, hideOrder, upload}) => {
     return (
         <div className="main">
 				
@@ -27,6 +27,8 @@ const MenuPage = ({uploadTextButton, menu, onClick, dataOrder, totalPrice, displ
                     dataOrder={dataOrder}
                     totalPrice={totalPrice}
                     orderLine="order-line"
+                    confirmOrder={confirmOrder}
+                    buttonText="Confrim Order"
                 />
         </div>
     );
