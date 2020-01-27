@@ -53,9 +53,9 @@ class AdministratorPage extends React.Component {
 
        
         
-        let newMenu = Object.assign({}, this.state.newMenu)
-        newMenu.image = this.state.pictures;
-        this.setState({newMenu: newMenu})
+        //let newMenu = Object.assign({}, this.state.newMenu)
+        //newMenu.image = this.state.pictures;
+        //this.setState({newMenu: newMenu})
         debugger;
     }
 
