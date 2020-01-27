@@ -10,16 +10,20 @@ class CashierPage extends React.Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            dataOrder: [],
+            dataOrder: this.props.order,
             totalPrice: 0
         };
+    this.confirmPayment = this.confirmPayment.bind(this);
+    }
 
+    componentWillMount() {
+        this.calculateTotalPrice();
     }
 
     componentWillReceiveProps(nextProps) {
 		if (this.props.orders !== nextProps.orders) {
 			this.setState({dataOrder: Object.assign({}, nextProps.orders)});
-		}
+        }
 		debugger;
 	}
 
@@ -48,6 +52,10 @@ class CashierPage extends React.Component {
 		debugger;
     }
 
+    confirmPayment() {
+        let a;
+    }
+
 
 
     render() {
@@ -67,6 +75,9 @@ class CashierPage extends React.Component {
                     dataOrder={this.props.order}
                     totalPrice={this.state.totalPrice}
                     orderLine="" 
+                    buttonText="Confirm Payment"
+                    confirmOrder={this.confirmPayment}
+                    totalPrice={this.state.totalPrice}
                 />
             </div>
         );
