@@ -22,7 +22,9 @@ class MainMenuPage extends React.Component {
 
 		};
 		debugger;
-        this.updateQuantity = this.updateQuantity.bind(this);	}
+        this.updateQuantity = this.updateQuantity.bind(this);	
+        this.saveOrder = this.saveOrder.bind(this);
+    }
 
 	componentDidMount() {
 
@@ -37,11 +39,15 @@ class MainMenuPage extends React.Component {
 		let menu = Object.assign([], this.state.menu);
 		let result;
 		if (operation == "plus") {
-			result = this.quantityOperation(menu,field, 1);
+            result = this.quantityOperation(menu,field, 1);
+            this.setState({menu: result});
+            
+            
 		} else {
-			result = this.quantityOperation(menu,field, -1);
+            result = this.quantityOperation(menu,field, -1);
+            this.setState({menu: result});
 		}
-		this.setState({menu: result});
+		
 		debugger;
 		
 	}
@@ -50,14 +56,13 @@ class MainMenuPage extends React.Component {
 		let dataIndex = menu.findIndex(a => a.name == field);
 		let newData = menu[dataIndex];
 		let tempQuantity = newData['quantity'];
-		newData['quantity'] = newData['quantity'] + operator;
-
-		if (newData['quantity'] < 0) {
-			newData['quantity'] = 0;
-		}
-		
-		this.addToOrderList(field, tempQuantity, newData);
-		menu.splice(dataIndex,1,newData);
+		let result = tempQuantity + operator;
+		if (result < 0) {
+			result = 0;
+        }
+        let finalData = Object.assign({}, newData, {quantity: result});
+		this.addToOrderList(field, tempQuantity, finalData);
+		menu.splice(dataIndex,1,finalData);
 		this.calculateTotalPrice();
 		debugger;
 		return menu;
@@ -75,7 +80,7 @@ class MainMenuPage extends React.Component {
 			}
 
 		} else {
-			if (tempQuantity > 1) {
+			if (tempQuantity > 0) {
 				dataOrder.splice(dataIndex,1, newData);
 				this.setState({dataOrder: dataOrder});
 			}
@@ -95,26 +100,20 @@ class MainMenuPage extends React.Component {
 			let lengthOrder = dataOrder.length;
 			let totalPrice =0;
 			for (let i=0; i < lengthOrder; i++) {
-				let menu = dataOrder[i];
-				let totalOneMenu = menu['quantity'] * menu['price'];
+                
+                let menu = dataOrder[i];
+                let quantity = menu['quantity']
+                let price = menu['price']
+				let totalOneMenu = quantity * price;
 				totalPrice = totalPrice + totalOneMenu;	
             }
             
             if (totalPrice == 0) {
                 this.setState({order: 'hide'});
             }
-            //this.props.orderAction.saveOrder(dataOrder);
-            let res = [
-                {
-                    image: "AyamTaliwang",
-                    name: "Ayam Taliwang Bakar",
-                    description: "Nasi, ayam taliwang",
-                    price: 32000,
-                    quantity: 2
-                }
-            ];
             
-            this.saveOrder();
+            
+            //this.saveOrder();
 			this.setState({totalPrice: totalPrice});
 			debugger;
 
@@ -124,8 +123,8 @@ class MainMenuPage extends React.Component {
     }
 
     saveOrder() {
-        let order = Object.assign({}, this.state.dataOrder);
-        //this.props.orderAction.saveOrder(order);
+        let order = Object.assign([], this.state.dataOrder);
+        this.props.orderAction.saveOrder(order);
         debugger;
     }
 
@@ -148,6 +147,7 @@ class MainMenuPage extends React.Component {
                 hideButton={this.state.button}       
                 newMenu={this.state.newMenu}     
                 hideOrder={this.state.order}
+                confirmOrder={this.saveOrder}
 			/>
 
 			);
@@ -170,7 +170,7 @@ export function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators(menuAction, dispatch),
         orderAction: bindActionCreators(orderAction, dispatch)
-        
+        //actions: bindActionCreators(orderAction, dispatch)
     };
     
 }
