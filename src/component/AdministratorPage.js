@@ -49,13 +49,6 @@ class AdministratorPage extends React.Component {
                 this.setState({uploadTextButton: 'Uploaded!'})
             }
         }, 1500);
-        
-
-       
-        
-        //let newMenu = Object.assign({}, this.state.newMenu)
-        //newMenu.image = this.state.pictures;
-        //this.setState({newMenu: newMenu})
         debugger;
     }
 
