@@ -1,13 +1,5 @@
 
-let order = [
-    {
-        image: "AyamTaliwang",
-        name: "Ayam Taliwang Bakar",
-        description: "Nasi, ayam taliwang",
-        price: 32000,
-        quantity: 0
-    }
-];
+let order = [];
 
 
 
@@ -25,10 +17,10 @@ class OrderApi {
 
     static saveOrder(newOrder) {
         debugger;
-        let news = Object.assign({}, newOrder)
+        let news = Object.assign([], newOrder)
         return new Promise((resolve, reject) => {
             setTimeout(() => {
-                resolve(Object.assign({}, news));
+                resolve(Object.assign([], news));
                 debugger;
             },0);
         });
