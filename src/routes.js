@@ -6,6 +6,7 @@ import AdministratorPage from './component/AdministratorPage';
 import { BrowserRouter } from 'react-router-dom';
 import CashierPage from './component/CashierPage';
 import AccountPage from './component/AccountPage';
+import LoginPage from './component/LoginPage';
 
 
 export default (
@@ -15,6 +16,8 @@ export default (
         <Route path="setting" component={AdministratorPage} />
         <Route path="cashier" component={CashierPage} />
         <Route path="account" component={AccountPage} /> 
+        <Route path="login" component={LoginPage} />
+
 
 	</Route>
       
