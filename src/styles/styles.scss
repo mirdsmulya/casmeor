@@ -122,7 +122,9 @@
   cursor: pointer;
 }
 
-
+.margin-top {
+  margin-top: 1em;
+}
 
 .sticky {
   position: fixed;
@@ -253,7 +255,7 @@
 .list-order {
   @include order-width();
   min-height: 10em;
-  //border: 1px solid #cccccc;
+  //border-left: 1px solid #cccccc;
   bottom: 0px;
   padding: 1em;
   
@@ -278,10 +280,56 @@
 .cashier-line {
   @include border();
   @include line-menu-width();
+  padding-left: 1em;
 
 }
 
 .manage-account {
   min-width: 40em;
   padding: 9em 7em;
+}
+
+.login-page {
+  //background-color: blue;
+  position: static;
+  height: max-content;
+  //width: fit-content;
+}
+
+
+.login-box {
+  
+  height: 12em;
+  width: 32em;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  position: sticky;
+  border: 2px solid black;
+}
+
+.login-title-area {
+  margin: 1em;
+  width: 30em;
+  height: 3em;
+  padding: 1em;
+}
+
+.login-user-pass-area {
+  display: flex;
+  
+  margin: 1em;
+  width: 30em;
+  height: 5.5em;
+  padding: 1em;
+}
+
+.login-button {
+  height: 2em;
+  bottom: 0%;
+  position: relative;
+}
+
+.margin-top {
+  margin-top: 1.7em;
 }
