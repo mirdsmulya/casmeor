@@ -4,7 +4,7 @@ import OrderBoard from './orderBoard';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as menuAction from '../actions/menuAction';
-
+import Toastr from 'toastr'
 
 class CashierPage extends React.Component {
     constructor(props, context) {
@@ -56,25 +56,29 @@ class CashierPage extends React.Component {
         let a;
     }
 
+    userCheck() {
+        if (sessionStorage.getItem("currentUserLogin") == null ) {
+            this.props.history.push('/login');
+            Toastr.info("Login Required")  
+        }
+    }
 
 
     render() {
         console.log(this.state.dataOrder);
         console.log(this.props.order);
         console.log(this.props.menu);
-        
-        
-        
+        this.userCheck();
         debugger;
         
         return(
             <div className="main">
                 <Sidebar/>
                 <OrderBoard
-                    hideOrder="cashier-line"
+                    
                     dataOrder={this.props.order}
                     totalPrice={this.state.totalPrice}
-                    orderLine="" 
+                    orderLine="cashier-line" 
                     buttonText="Confirm Payment"
                     confirmOrder={this.confirmPayment}
                     totalPrice={this.state.totalPrice}

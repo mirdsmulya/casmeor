@@ -5,6 +5,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as menuAction from '../actions/menuAction';
 import * as orderAction from '../actions/orderAction';
+import Toastr from 'toastr';
 
 
 class MainMenuPage extends React.Component {
@@ -124,8 +125,16 @@ class MainMenuPage extends React.Component {
 
     saveOrder() {
         let order = Object.assign([], this.state.dataOrder);
-        this.props.orderAction.saveOrder(order);
+		this.props.orderAction.saveOrder(order);
+		this.props.history.push('/cashier')
         debugger;
+	}
+
+	userCheck() {
+        if (sessionStorage.getItem("currentUserLogin") == null ) {
+            this.props.history.push('/login');
+            Toastr.info("Login Required")  
+        }
     }
 
 
@@ -135,7 +144,7 @@ class MainMenuPage extends React.Component {
 		console.log("dataOrderState", this.state.dataOrder);
         console.log("totalAmount", this.state.totalPrice);
         console.log(this.props.order);
-        
+        this.userCheck()
 
 		return(
 			<MenuPage 

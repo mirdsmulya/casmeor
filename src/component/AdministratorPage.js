@@ -6,6 +6,7 @@ import MenuPage from '../component/menuPage';
 import MenuApi from '../api/listMenuApi';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import Toastr from 'toastr';
 import * as menuAction from '../actions/menuAction';
 
 
@@ -74,12 +75,19 @@ class AdministratorPage extends React.Component {
 
     }
 
+    userCheck() {
+        if (sessionStorage.getItem("currentUserLogin") == null ) {
+            this.props.history.push('/login');
+            Toastr.info("Login Required");  
+        }
+    }
+
 
     render() {
         console.log(this.state.display);
         console.log("From render",this.state.menu);
         console.log(this.state.pictures[0]);
-        
+        this.userCheck();
         debugger;
 
 
