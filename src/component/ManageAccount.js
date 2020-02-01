@@ -4,9 +4,9 @@ import React from 'react';
 import TextInput from '../common/textInput';
 import SelectInput from '../common/SelectInput';
 
-const ManageAccount = ({data, onSave, onChange, options}) => {
+const ManageAccount = ({confirmPassword, data, onSave, onChange, options}) => {
+    
     return(
-
         <div className="manage-account border">
 
             <h3>Account Setting</h3>
@@ -45,9 +45,27 @@ const ManageAccount = ({data, onSave, onChange, options}) => {
                 value={data.role}
                 onChange={onChange}
                 options={options}
-            />   
+            /> 
 
-            <button className="btn" onClick={onSave}>Save</button> 
+            <TextInput 
+                name="password"
+                type="password"
+                label="Password"
+                value={data.password}
+                onChange={onChange}
+            
+            />  
+
+            <TextInput 
+                name="confirmPassword"
+                type="password"
+                label="Confirm Password"
+                value={confirmPassword}
+                onChange={onChange}
+            
+            /> 
+
+            <button className="btn margin-top" onClick={onSave}>Save</button> 
 
 
 
