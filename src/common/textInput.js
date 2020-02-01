@@ -1,8 +1,10 @@
 import React from 'react';
 
-const TextInput = ({ label, name, type, placeholder, className, onChange,value}) => {
+const TextInput = ({ boxClass, label, name, type, placeholder, className, onChange,value}) => {
+    
+    
     return (
-        <div className="">
+        <div className={boxClass}>
             <div>
             <label htmlFor={name}>{label}</label>
             </div>
@@ -15,6 +17,7 @@ const TextInput = ({ label, name, type, placeholder, className, onChange,value})
             value={value}
             
             />
+   
         </div>
     );
 };
