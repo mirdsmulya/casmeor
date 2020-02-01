@@ -4,13 +4,22 @@ import { render } from 'react-dom';
 import { Link, IndexLink } from 'react-router';
 
 const Sidebar = () => {
+    let buttonText = "Sign Out";
+    let username =  sessionStorage.getItem("currentUserLogin")
+    
+    
     return (
  
         <div className="fixed-sidebar">
 				<div className="sticky">
-				<div className="header-logo">LOGO</div>
+				<div className="header-logo">
+                <div className="">
+                <button className="" onClick={() => {sessionStorage.removeItem("currentUserLogin"); this.props.history.push('/login');}}>{buttonText}</button>
+                                    <p className="sidebar-text">{username}</p>
+                </div>  
+
+                </div>
                      <div className="sidebar">
-                            
                             
                     <IndexLink to="/"  activeClassName="active" className="sidebar-text" > 
                     <div className="sidebar-text-box">Menu and Order</div>
@@ -36,9 +45,11 @@ const Sidebar = () => {
                                 <Link to="/cashier" activeClassName="active" className="sidebar-text" > 
                                 <div className="sidebar-text-box">Cashier</div>
                                 </Link>
+                                
                             
                 </div>
             </div>
+            
         </div>
     );
 };
