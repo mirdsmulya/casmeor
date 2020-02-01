@@ -6,7 +6,8 @@ let account = [
         name: "Mirdan Syahid",
         nip: "MSA",
         username: "mirdsm",
-        role:"Owner"
+        role:"Owner",
+        password:"jajaja"
         
     }
 ]
@@ -42,6 +43,24 @@ class ListAccountApi {
                 let dataIndex = account.findIndex(a => a.nip == nip);
                 account.splice(dataIndex, 1);
                 resolve(Object.assign([],nip));
+                debugger;
+            },0);
+        });
+
+    }
+
+    static checkCredentials(credentials) {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                let result = false;
+                let dataIndex = account.findIndex(a => a.username == credentials.username );
+                if (dataIndex !== -1) {
+                    let tempAccount = account[dataIndex];
+                    if (tempAccount['password'] == credentials.password) {
+                        result = true;
+                    }
+                }
+                resolve(result);
                 debugger;
             },0);
         });
