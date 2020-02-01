@@ -3,6 +3,7 @@
 import React from 'react';
 import Sidebar from '../common/Sidebar';
 import ManageAccount from '../component/ManageAccount';
+import Toastr from 'toastr';
 
 import AccountList from '../component/AccountList';
 import ListAccountApi from '../api/listAccountApi';
@@ -12,8 +13,9 @@ class AccountPage extends React.Component {
         super(props, context);
         this.state = {
             account: [],
-            newAccount: {name:"", username:"", nip:"", role:""},
-            roleOptions: [{input:"Manager"}, {input:"Owner"}, {input:"Staff"}]
+            newAccount: {},
+            roleOptions: [{input:"Manager"}, {input:"Owner"}, {input:"Staff"}],
+            confirmPassword: ""
         };
         this.dataInputChange = this.dataInputChange.bind(this);
         this.onSave = this.onSave.bind(this);
@@ -21,29 +23,73 @@ class AccountPage extends React.Component {
 
     componentDidMount() {
         ListAccountApi.getAllAccount()
-        .then(account => this.setState({account: account}) )
+        .then(account => this.setState({account: account}) );
+
     }
 
 
     dataInputChange(event) {
         debugger;
         const field = event.target.name;
+        if (field == "confirmPassword") {
+            let password = event.target.value; 
+            return this.setState({confirmPassword: password});
+        }
+
         let newAccount = Object.assign({}, this.state.newAccount);
         newAccount[field] = event.target.value;
         return this.setState({newAccount: newAccount});
 
     }
 
+    checkInput(obj) {
+        for (let i = 0; i < obj.length; i++) {      
+            if (obj[i] == ""){return true;}
+        }
+        return false;
+
+    }
+
     onSave() {
         let newAccount = Object.assign({}, this.state.newAccount);
+        let accounts =  Object.assign([], this.state.account);
+        let Obj = Object.values(newAccount);
+        debugger;
+        if (Obj.length < 5 ||  this.checkInput(Obj)) {
+            debugger;
+            return Toastr.warning("All field must be filled!");
+        }
+
+        if (newAccount.password !== this.state.confirmPassword) {
+            return Toastr.error("Passowrd is not confirm!");
+        }
+
+        if (accounts.findIndex(acc => acc.nip == newAccount.nip) >= 0) {
+            return Toastr.error("Account already created!");
+        }
+
         ListAccountApi.saveAccount(newAccount)
-        .then(account => this.setState({account: account}));
+        .then(account => {
+            this.setState({account: account});
+            Toastr.success("User creation success!");
+            }
+        );
         debugger;
     }
+
+    userCheck() {
+        if (sessionStorage.getItem("currentUserLogin") == null ) {
+            this.props.history.push('/login');
+            Toastr.info("Login Required")  
+        }
+    }
+
+    
     render() {
         console.log(this.state);
         debugger;
-        
+        this.userCheck();
+
         return(
             <div className="main">
                 <Sidebar />
@@ -52,6 +98,7 @@ class AccountPage extends React.Component {
                     options={this.state.roleOptions}
                     onChange={this.dataInputChange}
                     onSave={this.onSave}
+                    confirmPassword={this.state.confirmPassword}
                 
                 />
 
