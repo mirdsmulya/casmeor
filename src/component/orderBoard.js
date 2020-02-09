@@ -7,7 +7,7 @@ const OrderBoard = ({buttonText,confirmOrder, hideOrder, dataOrder,totalPrice, o
     return (
         <div className={orderLine}>
 			<div className={hideOrder}>
-				<h5>Your order:</h5>
+				
                 {dataOrder.map(data =>
                 <OrderList key={data.name} data={data}
                 />)}
