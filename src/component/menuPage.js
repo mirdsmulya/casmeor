@@ -28,7 +28,7 @@ const MenuPage = ({confirmOrder, uploadTextButton, menu, onClick, dataOrder, tot
                     totalPrice={totalPrice}
                     orderLine="order-line"
                     confirmOrder={confirmOrder}
-                    buttonText="Confrim Order"
+                    buttonText=" Order"
                 />
         </div>
     );
