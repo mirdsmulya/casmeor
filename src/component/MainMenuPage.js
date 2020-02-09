@@ -126,7 +126,8 @@ class MainMenuPage extends React.Component {
     saveOrder() {
         let order = Object.assign([], this.state.dataOrder);
 		this.props.orderAction.saveOrder(order);
-		this.props.history.push('/cashier')
+		Toastr.success('Order confirmed!')
+		this.props.history.push('/cashier');
         debugger;
 	}
 
