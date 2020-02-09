@@ -46,11 +46,11 @@ class LoginPage extends React.Component {
         .then(result => {
             debugger;
             if (!result) {
-                return Toastr.error('Login gagal :(');
+                return Toastr.error('User or password might be wrong :(');
                           
             }
-            Toastr.success('Login success!');
-            sessionStorage.setItem("currentUserLogin", this.state.user.username)
+            sessionStorage.setItem("currentUserLogin", this.state.user.username);
+            Toastr.success('Login success! as ' + sessionStorage.getItem("currentUserLogin"));
             this.props.history.push('/');
         });
 
