@@ -15,6 +15,10 @@ export function deleteOrderSuccess(orders) {
     return {type: types.DELETE_ORDER_SUCCESS, orders};
 }
 
+export function updateOrderSuccess(orders) {
+    return {type: types.UPDATE_ORDER_SUCCESS, orders}
+}
+
 
 
 export function loadOrder() {
@@ -36,6 +40,17 @@ export function saveOrder(newOrder) {
         }).catch(error => {
             throw(error);
             
+        });
+    };
+}
+
+export function updateOrder(updatedOrder) {
+    return function(dispatch) {
+        debugger;
+        return OrderApi.updateOrder(updatedOrder).then( orders => {
+            dispatch(updateOrderSuccess(orders));
+        }).catch(error => {
+            throw(error);
         });
     };
 }
