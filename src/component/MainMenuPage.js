@@ -32,6 +32,18 @@ class MainMenuPage extends React.Component {
 		MenuApi.getAllMenu().then( (menu) => {
 			this.setState({menu: menu});
 		});
+
+		if (this.props.addOrder) {
+			let data = [];
+			data.push(this.props.addOrder.orderList)
+			this.setState({
+				order:'list-order sticky',
+				dataOrder: this.props.addOrder.orderList
+			});
+		this.calculateTotalPrice();
+		}
+
+
 		debugger;
     }
     
@@ -124,8 +136,12 @@ class MainMenuPage extends React.Component {
     }
 
     saveOrder() {
-        let order = Object.assign([], this.state.dataOrder);
-		this.props.orderAction.saveOrder(order);
+		let order = Object.assign([], this.state.dataOrder);
+		sessionStorage.setItem('orderMenu', JSON.stringify(order));
+		if (this.props.idOrder) {
+			this.props.history.push('/cashier/'+ this.props.idOrder);
+			return Toastr.success('Order updated!');
+		}
 		Toastr.success('Order confirmed!')
 		this.props.history.push('/cashier');
         debugger;
@@ -141,11 +157,9 @@ class MainMenuPage extends React.Component {
 
 	render() {
 		debugger;
-		console.log("From render",this.state.menu);
-		console.log("dataOrderState", this.state.dataOrder);
-        console.log("totalAmount", this.state.totalPrice);
-        console.log(this.props.order);
-        this.userCheck()
+		this.props;
+		this.state;
+        this.userCheck();
 
 		return(
 			<MenuPage 
@@ -164,14 +178,25 @@ class MainMenuPage extends React.Component {
 	}
 }
 
+export function getOrder(id, ordersHistory) {
+	let data = ordersHistory.find( orders => orders.id == id);
+	debugger;
+	return data;
+}
+
 export function mapStateToProps(state,ownProps) {
-    let order = state.orders;
-    let menus = state.menus;
+	let idOrder = ownProps.params.id;
+	let addOrder;
+	if (idOrder) {
+		addOrder = getOrder(idOrder, state.orders);
+		debugger;
+	}
     debugger;
     return {
         menus: state.menus,
-        order: state.orders
-        
+		order: state.orders,
+		addOrder: addOrder,
+		idOrder: idOrder
     };
     
 }
@@ -180,7 +205,6 @@ export function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators(menuAction, dispatch),
         orderAction: bindActionCreators(orderAction, dispatch)
-        //actions: bindActionCreators(orderAction, dispatch)
     };
     
 }
