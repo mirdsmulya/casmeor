@@ -69,6 +69,15 @@ class MenuApi {
         });
 
     }
+    static updateMenuOrder(menuOrders) {
+        for (let i = 0; i < menuOrders.length; i++) {
+            let menuOrder = menuOrders[i];
+            let menuIndex = menu.findIndex(a => a.name == menuOrder.name);
+            menu.splice(menuIndex,1, menuOrder);
+            
+        }
+        return menu;
+    }
 
 
 }
