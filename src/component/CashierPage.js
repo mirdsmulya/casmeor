@@ -4,9 +4,12 @@ import OrderBoard from './orderBoard';
 import OrderDetails from './OrderDetails';
 import OrderHistory from './OrderHistory';
 import ListOrderApi from '../api/listOrderApi';
+import ListMenuApi from '../api/listMenuApi';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as menuAction from '../actions/menuAction';
+import * as orderAction from '../actions/orderAction';
+
 import Toastr from 'toastr';
 
 class CashierPage extends React.Component {
@@ -21,29 +24,38 @@ class CashierPage extends React.Component {
     this.confirmOrder = this.confirmOrder.bind(this);
     this.orderDetails = this.orderDetails.bind(this);
     this.dataInputChange = this.dataInputChange.bind(this);
+    this.addOrder = this.addOrder.bind(this);
     }
 
     componentDidMount() {
-        ListOrderApi.getAllHistoryOrder()
-        .then((result)=> this.setState({orderHistory: result}));
+        let data = JSON.parse(sessionStorage.getItem('orderMenu')) ;
+        this.setState({dataOrder: data});
         debugger;
 
     }
 
-    componentWillReceiveProps(nextProps) {
-		if (this.props.order !== nextProps.order) {
-            this.setState({dataOrder: Object.assign({}, nextProps.order)});
-           
-        }
-        this.setState({dataOrder: this.props.order})
+    componentWillMount() {
         this.calculateTotalPrice();
+        if (this.props.idOrder) {
+            ListMenuApi.updateMenuOrder(this.props.orderGet.orderList)
+            .then(menuOrder => this.setState({menu: menuOrder}));
+            debugger;
+            return this.setState({orderDetails: this.props.orderGet});
+        
+        }
         this.orderDetails();
+
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({orderHistory: this.props.order});
+        this.calculateTotalPrice();
 		debugger;
 	}
 
     calculateTotalPrice() {
 		setTimeout( () => {
-			let dataOrder = Object.assign([], this.props.order);
+			let dataOrder = Object.assign([], this.state.dataOrder);
 			let lengthOrder = dataOrder.length;
 			let totalPrice =0;
 			for (let i=0; i < lengthOrder; i++) {
@@ -58,26 +70,33 @@ class CashierPage extends React.Component {
 
 			this.setState({totalPrice: totalPrice});
 			debugger;
-
-		},0);
-		
+		},0);	
 		debugger;
     }
 
-    confirmOrder() {
+    confirmOrder(event) {
+        event.preventDefault();
         let data = Object.assign({}, this.state.orderDetails);
+        let orders = Object.assign([], this.state.dataOrder );
         let totalAmount = this.state.totalPrice;
-        let lastOrderNumb = this.state.orderHistory.slice(-1)[0];
+        let lastOrderNumb = this.props.order.slice(-1)[0];
         data['totalAmount'] = totalAmount;
-        debugger;
-        if (data['orderNumber'] != lastOrderNumb['orderNumber']) {
-            ListOrderApi.saveOrderHistory(data)
-            .then(orders => { 
-                this.setState({orderHistory: orders});
-                Toastr.success('Order confirmed!');
-            });
-            return;
-            
+        data['orderList'] = orders;
+
+        if (this.props.idOrder) {
+            this.props.orderAction.updateOrder(data);
+            this.setState({orderDetails: [], dataOrder: [], totalAmount: []});
+            return Toastr.success("Order Updated!")
+        }
+
+        if (data['name'] == "" || data['table'] == "") {
+            return Toastr.warning('Please fill customer and table name!');
+        }
+        
+        if (data['orderNumber'] != lastOrderNumb['orderNumber'] && data['name'] != "") {
+            this.props.orderAction.saveOrder(data);
+            Toastr.success('Order confirmed!');
+            return;     
         }
         Toastr.error('Order already made!');
     }
@@ -89,9 +108,12 @@ class CashierPage extends React.Component {
             const dateString = newDate.getDate() + "/" + (newDate.getMonth()+1)  + "/" + newDate.getFullYear();
             const time = newDate.getTime();
             const cashier = sessionStorage.getItem('currentUserLogin');
-            const history = Object.assign({}, this.state.orderHistory.slice(-1)[0]);
+            const history = Object.assign({}, this.props.order.slice(-1)[0]);
             const orderNumb = history['orderNumber']+ 1;
+            debugger;
+            const idNumber = orderNumb + newDate.getDate() + "" + (newDate.getMonth()+1) + "" + newDate.getFullYear();
             const orderDetail = {
+                id: idNumber,
                 timeOrder: time,
                 cashierIdentity: cashier, 
                 currentDate: dateString, 
@@ -99,11 +121,12 @@ class CashierPage extends React.Component {
                 table: "",
                 name: "",
                 status: "Unpaid",
+                orderList: [],
                 totalAmount: 0 
             };
         debugger;
         this.setState({orderDetails: orderDetail});
-        }, 0);        
+        }, 50);        
     }
 
 
@@ -117,6 +140,11 @@ class CashierPage extends React.Component {
 
     }
 
+    addOrder(event) {
+        let id = event.target.name;
+        this.props.history.push('/'+ id); 
+    }
+
     userCheck() {
         if (sessionStorage.getItem("currentUserLogin") == null ) {
             this.props.history.push('/login');
@@ -126,11 +154,8 @@ class CashierPage extends React.Component {
 
 
     render() {
-        console.log(this.state.dataOrder);
-        console.log(this.props.order);
-        console.log(this.props.menu);
-        console.log(this.orderDetails);
-        //this.orderDetails();
+        console.log(this.state);
+        console.log(this.props);
         this.userCheck();
         debugger;
         
@@ -145,18 +170,18 @@ class CashierPage extends React.Component {
                 />
                 <OrderBoard
                     
-                    dataOrder={this.props.order}
+                    dataOrder={this.state.dataOrder}
                     totalPrice={this.state.totalPrice}
                     orderLine="cashier-line" 
                     buttonText="Confirm Order"
                     confirmOrder={this.confirmOrder}
                     totalPrice={this.state.totalPrice}
                 />
-
                 
                 </div>
                 <OrderHistory 
-                    orderHistory={this.state.orderHistory}
+                    orderHistory={this.props.order}
+                    addOrder={this.addOrder}
                 
                 />
             </div>
@@ -165,16 +190,28 @@ class CashierPage extends React.Component {
 
     
 }
-   
+ 
+export function getOrder(idOrder, orderHistory) {
+    let findOrder = orderHistory.find((a) => a.id == idOrder);
+    return findOrder;
+
+}
 
 export function mapStateToProps(state,ownProps) {
+    let idOrder = ownProps.params.id;
+    let orderGet;
+    if (idOrder) {
+        orderGet = getOrder(idOrder, state.orders)
+    }
     
     let order = state.orders;
     let menus = state.menus;
     debugger;
     return {
         order: order,
-        menu: menus
+        menu: menus,
+        idOrder: idOrder,
+        orderGet: orderGet
         
     };
     
@@ -182,7 +219,9 @@ export function mapStateToProps(state,ownProps) {
 
 export function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(menuAction, dispatch)
+        actions: bindActionCreators(menuAction, dispatch),
+        orderAction: bindActionCreators(orderAction, dispatch)
+
         
     };
     
