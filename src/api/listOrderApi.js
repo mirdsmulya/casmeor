@@ -19,7 +19,7 @@ class OrderApi {
         debugger;
         return new Promise((resolve, reject) => {
             setTimeout(() => {
-                resolve(Object.assign([], order));
+                resolve(Object.assign([], orderHistory));
                 debugger;
             },0);
         });
@@ -28,10 +28,11 @@ class OrderApi {
 
     static saveOrder(newOrder) {
         debugger;
-        let news = Object.assign([], newOrder)
+        //let news = Object.assign([], newOrder)
         return new Promise((resolve, reject) => {
             setTimeout(() => {
-                resolve(Object.assign([], news));
+                orderHistory = [...orderHistory, newOrder];
+                resolve(Object.assign([], orderHistory));
                 debugger;
             },0);
         });
@@ -56,6 +57,18 @@ class OrderApi {
                 debugger;
             },0);
         });
+    }
+
+    static updateOrder(updatedOrder) {
+        return new Promise((resolve, reject) => {
+            setTimeout(() => {
+                let orderIndex = orderHistory.findIndex((a) => a.id == updatedOrder.id);
+                orderHistory.splice(orderIndex, 1, updatedOrder);
+                resolve(Object.assign([], orderHistory));
+            });
+
+        });
+        
     }
 }
 
