@@ -10,9 +10,9 @@ const OrderList = ({orders, printBill, addOrder}) => {
                 <td>{orders.table} </td>
                 <td>{orders.totalAmount} </td>
                 <td>{orders.status} </td>
-                <td><button className="btn" onClick={addOrder} name={orders.orderNumber}>Add Order</button> </td>
-                <td><button className="btn" onClick={printBill} name={orders.orderNumber}>Print Bill</button> </td>
-                <td><button classname="btn" >Confirm Payment</button> </td>
+                <td><button className="btn" onClick={addOrder} name={orders.id}>Add Order</button> </td>
+                <td><button className="btn" onClick={printBill} name={orders.id}>Print Bill</button> </td>
+                <td><button className="btn" >Confirm Payment</button> </td>
 
             </tr>
 
