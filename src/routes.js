@@ -17,6 +17,8 @@ export default (
         <Route path="cashier" component={CashierPage} />
         <Route path="account" component={AccountPage} /> 
         <Route path="login" component={LoginPage} />
+        <Route path=":id" component={MainMenuPage} />
+        <Route path="cashier/:id" component={CashierPage} />
 
 
 	</Route>
