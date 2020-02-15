@@ -3,8 +3,6 @@ import Sidebar from '../common/Sidebar';
 import OrderBoard from './orderBoard';
 import OrderDetails from './OrderDetails';
 import OrderHistory from './OrderHistory';
-import ListOrderApi from '../api/listOrderApi';
-import ListMenuApi from '../api/listMenuApi';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as menuAction from '../actions/menuAction';
@@ -37,17 +35,13 @@ class CashierPage extends React.Component {
     componentWillMount() {
         this.calculateTotalPrice();
         if (this.props.idOrder) {
-            ListMenuApi.updateMenuOrder(this.props.orderGet.orderList)
-            .then(menuOrder => this.setState({menu: menuOrder}));
-            debugger;
-            return this.setState({orderDetails: this.props.orderGet});
-        
+            return this.setState({orderDetails: this.props.orderGet});       
         }
         this.orderDetails();
 
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps() {
         this.setState({orderHistory: this.props.order});
         this.calculateTotalPrice();
 		debugger;
@@ -148,7 +142,7 @@ class CashierPage extends React.Component {
     userCheck() {
         if (sessionStorage.getItem("currentUserLogin") == null ) {
             this.props.history.push('/login');
-            Toastr.info("Login Required")  
+            Toastr.info("Login Required");  
         }
     }
 
@@ -201,7 +195,7 @@ export function mapStateToProps(state,ownProps) {
     let idOrder = ownProps.params.id;
     let orderGet;
     if (idOrder) {
-        orderGet = getOrder(idOrder, state.orders)
+        orderGet = getOrder(idOrder, state.orders);
     }
     
     let order = state.orders;
@@ -221,8 +215,6 @@ export function mapDispatchToProps(dispatch) {
     return {
         actions: bindActionCreators(menuAction, dispatch),
         orderAction: bindActionCreators(orderAction, dispatch)
-
-        
     };
     
 }
