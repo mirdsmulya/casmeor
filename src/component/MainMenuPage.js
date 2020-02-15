@@ -29,24 +29,22 @@ class MainMenuPage extends React.Component {
 
 	componentDidMount() {
 
-		MenuApi.getAllMenu().then( (menu) => {
-			this.setState({menu: menu});
+		if (!this.props.addOrder) {
+			MenuApi.getAllMenu().then( (menu) => { this.setState({menu: menu}); });
+			this.calculateTotalPrice();
+			debugger;
+			return;
+		} 
+		MenuApi.updateMenuOrder(this.props.addOrder.orderList)
+		.then(menuOrder => this.setState({menu: menuOrder}));
+
+		this.setState({
+			order:'list-order sticky',
+			dataOrder: this.props.addOrder.orderList
 		});
-
-		if (this.props.addOrder) {
-			let data = [];
-			data.push(this.props.addOrder.orderList)
-			this.setState({
-				order:'list-order sticky',
-				dataOrder: this.props.addOrder.orderList
-			});
 		this.calculateTotalPrice();
-		}
-
-
 		debugger;
-    }
-    
+	}    
 	updateQuantity(event, operation) {
 		const field = event.target.name;
 		let menu = Object.assign([], this.state.menu);
@@ -125,8 +123,6 @@ class MainMenuPage extends React.Component {
                 this.setState({order: 'hide'});
             }
             
-            
-            //this.saveOrder();
 			this.setState({totalPrice: totalPrice});
 			debugger;
 
