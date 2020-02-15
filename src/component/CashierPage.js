@@ -7,6 +7,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as menuAction from '../actions/menuAction';
 import * as orderAction from '../actions/orderAction';
+import Printer, { print } from 'react-pdf-print'
 
 import Toastr from 'toastr';
 
@@ -23,16 +24,20 @@ class CashierPage extends React.Component {
     this.orderDetails = this.orderDetails.bind(this);
     this.dataInputChange = this.dataInputChange.bind(this);
     this.addOrder = this.addOrder.bind(this);
+    this.confirmPayment = this.confirmPayment.bind(this);
     }
 
     componentDidMount() {
-        let data = JSON.parse(sessionStorage.getItem('orderMenu')) ;
-        this.setState({dataOrder: data});
-        debugger;
+        
 
     }
 
     componentWillMount() {
+
+        let data = JSON.parse(sessionStorage.getItem('orderMenu')) ;
+        this.setState({dataOrder: data});
+        debugger;
+
         this.calculateTotalPrice();
         if (this.props.idOrder) {
             return this.setState({orderDetails: this.props.orderGet});       
@@ -138,6 +143,21 @@ class CashierPage extends React.Component {
         let id = event.target.name;
         this.props.history.push('/'+ id); 
     }
+    
+    confirmPayment(event) {
+        let idOrder = event.target.name;
+        let orderHistory = Object.assign([], this.props.order);
+        let orderData = orderHistory.find( order => order.id == idOrder);
+
+        if (orderData.status == "PAID") {
+            return Toastr.warning('Payment already made!')
+        }
+        let orderUpdate = Object.assign({}, {status: "PAID"});
+        orderUpdate = Object.assign({}, orderData, orderUpdate);
+        this.props.orderAction.updateOrder(orderUpdate);
+        Toastr.success('Payment from '+ orderData.name +' accepted!');
+        debugger;
+    }
 
     userCheck() {
         if (sessionStorage.getItem("currentUserLogin") == null ) {
@@ -176,6 +196,8 @@ class CashierPage extends React.Component {
                 <OrderHistory 
                     orderHistory={this.props.order}
                     addOrder={this.addOrder}
+                    
+                    confirmPayment={this.confirmPayment}
                 
                 />
             </div>
