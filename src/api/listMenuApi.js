@@ -70,13 +70,19 @@ class MenuApi {
 
     }
     static updateMenuOrder(menuOrders) {
-        for (let i = 0; i < menuOrders.length; i++) {
-            let menuOrder = menuOrders[i];
-            let menuIndex = menu.findIndex(a => a.name == menuOrder.name);
-            menu.splice(menuIndex,1, menuOrder);
-            
-        }
-        return menu;
+        return new Promise((resolve,reject) => {
+            setTimeout(() => {
+                let updateMenu = Object.assign([], menu);
+                for (let i = 0; i < menuOrders.length; i++) {
+                    let menuOrder = menuOrders[i];
+                    let menuIndex = updateMenu.findIndex(a => a.name == menuOrder.name);
+                    updateMenu.splice(menuIndex,1, menuOrder);    
+                }
+                debugger;
+                resolve(Object.assign([], updateMenu));
+
+            },0);
+        });
     }
 
 
