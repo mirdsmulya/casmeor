@@ -2,7 +2,7 @@ import React from 'react';
 import OrderList from '../component/OrderList';
 
 
-const OrderHistory = ({orderHistory, addOrder, confirmPayment, printBill}) => {
+const OrderHistory = ({orderHistory, addOrder, confirmPayment, printBill, buttonDisable}) => {
     debugger;
     return(
         <div className="margin-top ">
@@ -18,7 +18,7 @@ const OrderHistory = ({orderHistory, addOrder, confirmPayment, printBill}) => {
             </thead>
             <tbody>
                 {orderHistory.map(orders => 
-                    <OrderList key={orders.id} orders={orders} addOrder={addOrder} printBill={printBill} confirmPayment={confirmPayment} />
+                    <OrderList key={orders.id} orders={orders} addOrder={addOrder} printBill={printBill} confirmPayment={confirmPayment} buttonDisable={buttonDisable} />
                 )}
             </tbody>
             </table>

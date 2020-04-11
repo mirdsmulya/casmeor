@@ -10,8 +10,8 @@ const Sidebar = () => {
     
     return (
  
-        <div className="fixed-sidebar">
-				<div className="sticky">
+        <div className="fixed-sidebar ">
+				<div className="sticky ">
 				<div className="header-logo">
                 <div className="">
                 <button className="" onClick={() => {sessionStorage.removeItem("currentUserLogin"); this.props.history.push('/login');}}>{buttonText}</button>
