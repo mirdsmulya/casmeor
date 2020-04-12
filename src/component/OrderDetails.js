@@ -1,5 +1,4 @@
 import React from 'react';
-import TextInput from '../common/textInput';
 
 
 const OrderDetails = ({orderDetails, tableChange}) => {    

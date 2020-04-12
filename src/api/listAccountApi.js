@@ -10,7 +10,7 @@ let account = [
         password:"jajaja"
         
     }
-]
+];
 
 
 class ListAccountApi {

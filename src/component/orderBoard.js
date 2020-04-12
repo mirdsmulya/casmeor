@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import OrderList from '../common/orderList';
 
@@ -13,8 +11,6 @@ const OrderBoard = ({buttonText,confirmOrder, hideOrder, dataOrder,totalPrice, o
                 />)}
                 <div className="total-order">
                 <p className="total-amount">Total: Rp{totalPrice}</p>
-                
-
                 </div>
                 <button onClick={confirmOrder}>{buttonText}</button>
 			</div>

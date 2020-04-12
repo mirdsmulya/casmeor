@@ -1,12 +1,9 @@
 
-import React, { useState } from 'react';
+import React from 'react';
 import TexInput from '../common/textInput';
-import Sidebar from '../common/Sidebar';
 import ImageUploader from 'react-images-upload';
 
 const MenuInput = ({uploadTextButton, onChange, display, newMenu, saveButton, upload}) => {
-   
-    debugger;
     return(
         <div className={display} >
             <div className="border img">
@@ -17,10 +14,8 @@ const MenuInput = ({uploadTextButton, onChange, display, newMenu, saveButton, up
                     label=""
                     onChange={upload}
                     singleImage={true}
-                />
-                
+                />               
             </div>
-
             <div className="detail-menu  ">
             <TexInput 
                 name="name"
@@ -30,8 +25,6 @@ const MenuInput = ({uploadTextButton, onChange, display, newMenu, saveButton, up
                 onChange={onChange}
                 value={newMenu.name} 
             />
-
-
             <textarea
                 name="description"
                 type="text"
@@ -51,16 +44,11 @@ const MenuInput = ({uploadTextButton, onChange, display, newMenu, saveButton, up
                 onChange={onChange}
                 value={newMenu.price} 
             /> 
-            <div className="qty-box save-button ">
-                    
+            <div className="qty-box save-button ">            
             <button className=""  newMenu={newMenu} onClick={saveButton}>Save</button>
             </div>
             </div>
-           
-           
         </div>
     );
-    
-    
-}
+};
 export default MenuInput;

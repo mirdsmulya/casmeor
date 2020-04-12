@@ -3,7 +3,6 @@ import OrderList from '../component/OrderList';
 
 
 const OrderHistory = ({orderHistory, addOrder, confirmPayment, printBill, buttonDisable}) => {
-    debugger;
     return(
         <div className="margin-top ">
             <table className="table">

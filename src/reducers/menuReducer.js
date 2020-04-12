@@ -12,9 +12,5 @@ export default function menuReducers(state = initialState.menus, action) {
             return action.menus;
         default:
             return state;
-
-    }
-
-
-    
+    } 
 }

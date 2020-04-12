@@ -16,7 +16,7 @@ export function deleteOrderSuccess(orders) {
 }
 
 export function updateOrderSuccess(orders) {
-    return {type: types.UPDATE_ORDER_SUCCESS, orders}
+    return {type: types.UPDATE_ORDER_SUCCESS, orders};
 }
 
 
@@ -38,8 +38,7 @@ export function saveOrder(newOrder) {
         return OrderApi.saveOrder(newOrder).then( orders => {
             dispatch(saveOrderSuccess(orders));
         }).catch(error => {
-            throw(error);
-            
+            throw(error);       
         });
     };
 }

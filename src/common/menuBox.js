@@ -19,8 +19,7 @@ const MenuBox = ({dataMenu, onClick,hide, deleteButton} ) => {
                 <h5 className="price "> {dataMenu.price} </h5>
                 <div className="qty-box" >  <button onClick={(e) => onClick(e, "minus")} name={dataMenu.name}>-</button>  
                                                 {dataMenu.quantity}  
-                                            <button onClick={(e) => onClick(e, "plus")} name={dataMenu.name}>+</button> 
-                                            
+                                            <button onClick={(e) => onClick(e, "plus")} name={dataMenu.name}>+</button>                                        
                 </div>
             </div>
             <button className={hide} onClick={deleteButton} name={dataMenu.name}>Delete</button>

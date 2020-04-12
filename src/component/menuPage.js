@@ -1,7 +1,6 @@
 import React from 'react';
 import Sidebar from '../common/Sidebar';
 import MenuBox from '../common/menuBox';
-import OrderList from '../common/orderList';
 import MenuInput from './MenuInput';
 import OrderBoard from './orderBoard';
 
@@ -21,7 +20,6 @@ const MenuPage = ({confirmOrder, uploadTextButton, menu, onClick, dataOrder, tot
                     />)}
 					
 				</div>
-
 				<OrderBoard 
                     hideOrder={hideOrder}
                     dataOrder={dataOrder}

@@ -1,8 +1,5 @@
-
-
 import React from 'react';
 import AccountInfo from '../component/AccountInfo';
-
 
 const AccountList = ({accounts}) => {
     return(
@@ -23,6 +20,6 @@ const AccountList = ({accounts}) => {
         </tbody>
         </table>
         </div>
-    )
-}
+    );
+};
 export default AccountList;

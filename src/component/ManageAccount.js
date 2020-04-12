@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import TextInput from '../common/textInput';
 import SelectInput from '../common/SelectInput';
@@ -8,7 +6,6 @@ const ManageAccount = ({confirmPassword, data, onSave, onChange, options}) => {
     
     return(
         <div className="manage-account border">
-
             <h3>Account Setting</h3>
             <p>Create New Account</p>
             <TextInput 
@@ -16,8 +13,7 @@ const ManageAccount = ({confirmPassword, data, onSave, onChange, options}) => {
                 type="string"
                 label="Name"
                 value={data.name}
-                onChange={onChange}
-            
+                onChange={onChange}   
             />
 
             <TextInput 
@@ -25,8 +21,7 @@ const ManageAccount = ({confirmPassword, data, onSave, onChange, options}) => {
                 type="string"
                 label="User Name"
                 value={data.username}
-                onChange={onChange}
-            
+                onChange={onChange}          
             /> 
 
             <TextInput 
@@ -34,12 +29,11 @@ const ManageAccount = ({confirmPassword, data, onSave, onChange, options}) => {
                 type="string"
                 label="Nomor Induk Pegawai"
                 value={data.nip}
-                onChange={onChange}
-            
+                onChange={onChange}          
             />
 
             <SelectInput 
-                name='role'
+                name="role"
                 type="string"
                 label="Role"
                 value={data.role}
@@ -52,8 +46,7 @@ const ManageAccount = ({confirmPassword, data, onSave, onChange, options}) => {
                 type="password"
                 label="Password"
                 value={data.password}
-                onChange={onChange}
-            
+                onChange={onChange}           
             />  
 
             <TextInput 
@@ -61,14 +54,9 @@ const ManageAccount = ({confirmPassword, data, onSave, onChange, options}) => {
                 type="password"
                 label="Confirm Password"
                 value={confirmPassword}
-                onChange={onChange}
-            
+                onChange={onChange}          
             /> 
-
             <button className="btn margin-top" onClick={onSave}>Save</button> 
-
-
-
         </div>
 
     );

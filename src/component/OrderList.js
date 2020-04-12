@@ -2,12 +2,11 @@ import React from 'react';
 
 
 const OrderList = ({orders, printBill, addOrder, confirmPayment}) => {
-    let buttonDisable = false 
+    let buttonDisable = false ;
     if (orders.status == "PAID") {
         buttonDisable = true;
      }
 
-    debugger;
     return(
             <tr>
                 <td>{orders.orderNumber}</td>
@@ -18,9 +17,7 @@ const OrderList = ({orders, printBill, addOrder, confirmPayment}) => {
                 <td><button className="btn" onClick={addOrder} name={orders.id} disabled={buttonDisable}>Add Order</button> </td>
                 <td><button className="btn" onClick={printBill} name={orders.id} disabled={buttonDisable}>Print Bill</button> </td>
                 <td><button className="btn" onClick={confirmPayment} name={orders.id} disabled={buttonDisable}>Confirm Payment</button> </td>
-
             </tr>
-
     );
 };
 export default OrderList;

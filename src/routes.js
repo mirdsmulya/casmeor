@@ -19,8 +19,6 @@ export default (
         <Route path="login" component={LoginPage} />
         <Route path=":id" component={MainMenuPage} />
         <Route path="cashier/:id" component={CashierPage} />
-
-
-	</Route>
+    </Route>
       
 );

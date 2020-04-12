@@ -1,4 +1,3 @@
-
 import React from 'react';
 import Sidebar from '../common/Sidebar';
 import LoginBox from '../component/LoginBox';
@@ -8,7 +7,6 @@ import Toastr from 'toastr';
 class LoginPage extends React.Component {
     constructor(props, context) {
         super(props, context);
-
         this.state = {
             user: {username:"", password:""}
         };
@@ -16,20 +14,12 @@ class LoginPage extends React.Component {
         this.loginButton = this.loginButton.bind(this);
         this.enterPressed = this.enterPressed.bind(this);
     }
-    
-
-    componentDidMount() {
-        let a;
-
-    }
 
     dataInputChange(event) {
-        debugger;
         const field = event.target.name;
         let user = Object.assign({}, this.state.user);
         user[field] = event.target.value;
         return this.setState({user: user});
-
     }
 
     enterPressed(event) {
@@ -38,50 +28,33 @@ class LoginPage extends React.Component {
 			event.preventDefault();
 			this.loginButton();
         }
-        debugger;
 	}
 
     loginButton() {
         ListAccountApi.checkCredentials(this.state.user)
         .then(result => {
-            debugger;
             if (!result) {
-                return Toastr.error('User or password might be wrong :(');
-                          
+                return Toastr.error('User or password might be wrong :(');          
             }
             sessionStorage.setItem("currentUserLogin", this.state.user.username);
             Toastr.success('Login success! as ' + sessionStorage.getItem("currentUserLogin"));
             this.props.history.push('/');
-        });
-
-        debugger;
-        
-        
+        });      
     }
 
-
-
     render() {
-        console.log(this.state);
-        debugger;
         
         return(
-            <div className="main login-page">
-                
+            <div className="main login-page">              
                 <Sidebar />
-
                 <LoginBox 
                     user={this.state.user}
                     onChange={this.dataInputChange}
                     loginButton={this.loginButton}
                     onKeyPress={this.enterPressed}
-                
                 />
-
             </div>
         );
     }
-
-
 }
 export default LoginPage;

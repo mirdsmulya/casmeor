@@ -3,18 +3,15 @@ import * as types from './actionTypes';
 
 
 export function loadMenuSuccess(menus) {
-    return { type: types.LOAD_MENU_SUCCESS, menus};
-    
+    return { type: types.LOAD_MENU_SUCCESS, menus};   
 }
 
 export function saveMenuSuccess(menus) {
-    return { type: types.SAVE_MENU_SUCCESS, menus};
-    
+    return { type: types.SAVE_MENU_SUCCESS, menus}; 
 }
 
 export function deleteMenuSuccess(menus) {
-    return { type: types.DELETE_MENU_SUCCESS, menus};
-    
+    return { type: types.DELETE_MENU_SUCCESS, menus};  
 }
 
 export function loadMenu() {
@@ -23,9 +20,7 @@ export function loadMenu() {
             dispatch(loadMenuSuccess(menus));
         }).catch(error => {
             throw(error);
-        });
-        
-        
+        });   
     };  
 }
 
@@ -35,10 +30,8 @@ export function saveMenu(newMenu) {
             dispatch(saveMenuSuccess(menus));
         }).catch(error => {
             throw(error);
-        });
-        
+        });  
     };
-    
 }
 
 
@@ -48,8 +41,6 @@ export function deleteMenu(name) {
             dispatch(deleteMenuSuccess(menus));
         }).catch(error => {
             throw(error);
-        });
-        
-    };
-    
+        });       
+    };   
 }

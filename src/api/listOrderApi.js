@@ -52,7 +52,7 @@ class OrderApi {
 
         return new Promise((resolve, reject) => {
             setTimeout(() => {
-                orderHistory = [...orderHistory, newOrder]
+                orderHistory = [...orderHistory, newOrder];
                 resolve(Object.assign([], orderHistory));
                 debugger;
             },0);

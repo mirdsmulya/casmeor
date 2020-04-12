@@ -1,5 +1,5 @@
 import React from 'react';
-import TextInput from '../common/textInput'
+import TextInput from '../common/textInput';
 
 const LoginBox = ({onKeyPress, user, loginButton, onChange}) => {
     return(
@@ -14,9 +14,7 @@ const LoginBox = ({onKeyPress, user, loginButton, onChange}) => {
                     name="username"
                     value={user.username}
                     onChange={onChange}
-                    onKeyPress={onKeyPress}
-                    
-                
+                    onKeyPress={onKeyPress} 
                 />
 
                 <TextInput 
@@ -26,14 +24,11 @@ const LoginBox = ({onKeyPress, user, loginButton, onChange}) => {
                     value={user.password}
                     onChange={onChange}
                     onKeyPress={onKeyPress}
-                
                 />
 
                 <button onKeyPress={onKeyPress} className="login-button margin-top" onClick={loginButton}>Login</button>
 
             </div>
-            
-
         </div>
     );
 };

@@ -5,13 +5,10 @@ import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import '../node_modules/toastr/build/toastr.min.css';
 import {loadMenu} from './actions/menuAction';
 import {loadOrder} from './actions/orderAction';
-import App from './component/App';
-//import { BrowserRouter as Router, browserHistory } from 'react-router-dom';
 import configureStore from './stores/configureStrore';
 import { Provider } from 'react-redux'; 
 import routes from './routes';
 import { Router, browserHistory } from 'react-router';
-
 
 const store = configureStore();
 store.dispatch(loadMenu());

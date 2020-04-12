@@ -1,10 +1,7 @@
-
-
 import React from 'react';
 import Sidebar from '../common/Sidebar';
 import ManageAccount from '../component/ManageAccount';
 import Toastr from 'toastr';
-
 import AccountList from '../component/AccountList';
 import ListAccountApi from '../api/listAccountApi';
 
@@ -24,19 +21,16 @@ class AccountPage extends React.Component {
     componentDidMount() {
         ListAccountApi.getAllAccount()
         .then(account => this.setState({account: account}) );
-
     }
 
-
     dataInputChange(event) {
-        debugger;
         const field = event.target.name;
         if (field == "confirmPassword") {
             let password = event.target.value; 
             return this.setState({confirmPassword: password});
         }
 
-        let newAccount = Object.assign({}, this.state.newAccount);
+        const newAccount = Object.assign({}, this.state.newAccount);
         newAccount[field] = event.target.value;
         return this.setState({newAccount: newAccount});
 
@@ -51,12 +45,11 @@ class AccountPage extends React.Component {
     }
 
     onSave() {
-        let newAccount = Object.assign({}, this.state.newAccount);
-        let accounts =  Object.assign([], this.state.account);
-        let Obj = Object.values(newAccount);
-        debugger;
+        const newAccount = Object.assign({}, this.state.newAccount);
+        const accounts =  Object.assign([], this.state.account);
+        const Obj = Object.values(newAccount);
+        
         if (Obj.length < 5 ||  this.checkInput(Obj)) {
-            debugger;
             return Toastr.warning("All field must be filled!");
         }
 
@@ -74,22 +67,17 @@ class AccountPage extends React.Component {
             Toastr.success("User creation success!");
             }
         );
-        debugger;
     }
 
     userCheck() {
         if (sessionStorage.getItem("currentUserLogin") == null ) {
             this.props.history.push('/login');
-            Toastr.info("Login Required")  
+            Toastr.info("Login Required")  ;
         }
     }
-
     
     render() {
-        console.log(this.state);
-        debugger;
         this.userCheck();
-
         return(
             <div className="main">
                 <Sidebar />
@@ -101,12 +89,9 @@ class AccountPage extends React.Component {
                     confirmPassword={this.state.confirmPassword}
                 
                 />
-
                 <AccountList accounts={this.state.account}/>
-
             </div>
         );
     }
-
 }
 export default AccountPage;
