@@ -20,7 +20,7 @@ class CashierPage extends React.Component {
             totalPrice: 0,
             orderDetails: {},
             orderHistory: [],
-            showModal: "modals"
+            showModal: "none"
         };
     this.confirmOrder = this.confirmOrder.bind(this);
     this.orderDetails = this.orderDetails.bind(this);
@@ -28,9 +28,14 @@ class CashierPage extends React.Component {
     this.addOrder = this.addOrder.bind(this);
     this.confirmPayment = this.confirmPayment.bind(this);
     this.closeModal = this.closeModal.bind(this);
+    this.backToMenu = this.backToMenu.bind(this);
     }
 
     componentDidMount() {
+        if (this.props.order) {
+            this.setState({showModal: "modals"});
+        }
+        debugger;
         
 
     }
@@ -97,7 +102,7 @@ class CashierPage extends React.Component {
         
         if (data['orderNumber'] != lastOrderNumb['orderNumber'] && data['name'] != "") {
             this.props.orderAction.saveOrder(data);
-            Toastr.success('Order confirmed!');
+           // Toastr.success('Order confirmed!');
             return;     
         }
         Toastr.error('Order already made!');
@@ -166,7 +171,19 @@ class CashierPage extends React.Component {
     }
 
     closeModal() {
-        this.setState({showModal: 'none'})
+        this.setState({showModal: 'none'});
+        if (this.props.idOrder) {
+            return Toastr.info("Please confirm the order")
+        }
+        Toastr.info("Please fill name and table to confim the order!")
+    }
+
+    backToMenu() {
+        if (this.props.idOrder) {
+            return this.props.history.push('/'+ this.props.idOrder); 
+        }
+        this.props.history.push('/')
+    
     }
 
     userCheck() {
@@ -213,8 +230,8 @@ class CashierPage extends React.Component {
 
                 <ConfirmModal 
                     modalStatement="Apa kamu yakin mau simpan order ini?"
-                    yesClick=""
-                    noClick={this.closeModal}
+                    yesClick={this.closeModal}
+                    noClick={this.backToMenu}
                     showModal={this.state.showModal}
 
                 />

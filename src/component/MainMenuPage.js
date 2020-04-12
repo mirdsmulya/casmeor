@@ -136,9 +136,9 @@ class MainMenuPage extends React.Component {
 		sessionStorage.setItem('orderMenu', JSON.stringify(order));
 		if (this.props.idOrder) {
 			this.props.history.push('/cashier/'+ this.props.idOrder);
-			return Toastr.success('Order updated!');
+			return ;
 		}
-		Toastr.success('Order confirmed!')
+		
 		this.props.history.push('/cashier');
         debugger;
 	}
