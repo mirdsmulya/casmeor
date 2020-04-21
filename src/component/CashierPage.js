@@ -1,7 +1,5 @@
 import React from 'react';
 import Sidebar from '../common/Sidebar';
-import OrderBoard from './orderBoard';
-import OrderDetails from './OrderDetails';
 import OrderHistory from './OrderHistory';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -17,12 +15,10 @@ class CashierPage extends React.Component {
         this.state = {
             dataOrder: [],
             totalPrice: 0,
-            orderDetails: {},
+            orderDetails: {name:"", table:""},
             orderHistory: [],
             showModal: "none"
         };
-    this.confirmOrder = this.confirmOrder.bind(this);
-    this.orderDetails = this.orderDetails.bind(this);
     this.dataInputChange = this.dataInputChange.bind(this);
     this.addOrder = this.addOrder.bind(this);
     this.confirmPayment = this.confirmPayment.bind(this);
@@ -30,98 +26,9 @@ class CashierPage extends React.Component {
     this.backToMenu = this.backToMenu.bind(this);
     }
 
-    componentDidMount() {
-        if (this.props.order) {
-            this.setState({showModal: "modals"});
-        }        
-    }
-
-    componentWillMount() {
-        const data = JSON.parse(sessionStorage.getItem('orderMenu')) ;
-        this.setState({dataOrder: data});
-        this.calculateTotalPrice();
-        if (this.props.idOrder) {
-            return this.setState({orderDetails: this.props.orderGet});       
-        }
-        this.orderDetails();
-
-    }
-
     componentWillReceiveProps() {
         this.setState({orderHistory: this.props.order});
-        this.calculateTotalPrice();
-	}
-
-    calculateTotalPrice() {
-		setTimeout( () => {
-			const dataOrder = Object.assign([], this.state.dataOrder);
-			const lengthOrder = dataOrder.length;
-			let totalPrice =0;
-			for (let i=0; i < lengthOrder; i++) {
-				const menu = dataOrder[i];
-				const totalOneMenu = menu['quantity'] * menu['price'];
-				totalPrice = totalPrice + totalOneMenu;	
-            }
-            
-            if (totalPrice == 0) {
-                this.setState({order: 'hide'});
-            }
-
-			this.setState({totalPrice: totalPrice});
-		},0);	
-    }
-
-    confirmOrder(event) {
-        event.preventDefault();
-        const data = Object.assign({}, this.state.orderDetails);
-        const orders = Object.assign([], this.state.dataOrder );
-        const totalAmount = this.state.totalPrice;
-        const lastOrderNumb = this.props.order.slice(-1)[0];
-        data['totalAmount'] = totalAmount;
-        data['orderList'] = orders;
-
-        if (this.props.idOrder) {
-            this.props.orderAction.updateOrder(data);
-            this.setState({orderDetails: [], dataOrder: [], totalAmount: []});
-            return Toastr.success("Order Updated!");
-        }
-
-        if (data['name'] == "" || data['table'] == "") {
-            return Toastr.warning('Please fill customer and table name!');
-        }
-        
-        if (data['orderNumber'] != lastOrderNumb['orderNumber'] && data['name'] != "") {
-            this.props.orderAction.saveOrder(data);
-            return;     
-        }
-        Toastr.error('Order already made!');
-    }
-
-    orderDetails() {
-        setTimeout(() => {
-
-            const newDate = new Date();
-            const dateString = newDate.getDate() + "/" + (newDate.getMonth()+1)  + "/" + newDate.getFullYear();
-            const time = newDate.getTime();
-            const cashier = sessionStorage.getItem('currentUserLogin');
-            const history = Object.assign({}, this.props.order.slice(-1)[0]);
-            const orderNumb = history['orderNumber']+ 1;
-            const idNumber = orderNumb + newDate.getDate() + "" + (newDate.getMonth()+1) + "" + newDate.getFullYear();
-            const orderDetail = {
-                id: idNumber,
-                timeOrder: time,
-                cashierIdentity: cashier, 
-                currentDate: dateString, 
-                orderNumber: orderNumb, 
-                table: "",
-                name: "",
-                status: "Unpaid",
-                orderList: [],
-                totalAmount: 0 
-            };
-        this.setState({orderDetails: orderDetail});
-        }, 50);        
-    }
+	}    
 
     dataInputChange(event) {
         const field = event.target.name;
@@ -140,11 +47,11 @@ class CashierPage extends React.Component {
         const orderHistory = Object.assign([], this.props.order);
         const orderData = orderHistory.find( order => order.id == idOrder);
 
-        if (orderData.status == "PAID") {
+        if (orderData.paymentStatus == "PAID") {
             return Toastr.warning('Payment already made!');
         }
 
-        let orderUpdate = Object.assign({}, {status: "PAID"});
+        let orderUpdate = Object.assign({}, {paymentStatus: "PAID"});
         orderUpdate = Object.assign({}, orderData, orderUpdate);
         this.props.orderAction.updateOrder(orderUpdate);
         this.setState({orderDetails: [], dataOrder: [], totalAmount: []});
@@ -178,22 +85,7 @@ class CashierPage extends React.Component {
         return(
             <div className="main">
                 <Sidebar/>
-                <div>
-                <div>Order Details</div>
-                <OrderDetails 
-                    orderDetails={this.state.orderDetails}
-                    tableChange={this.dataInputChange}
-                />
-                <OrderBoard
-                    
-                    dataOrder={this.state.dataOrder}
-                    totalPrice={this.state.totalPrice}
-                    orderLine="cashier-line" 
-                    buttonText="Confirm Order"
-                    confirmOrder={this.confirmOrder}
-                />
-                
-                </div>
+
                 <OrderHistory 
                     orderHistory={this.props.order}
                     addOrder={this.addOrder}

@@ -1,6 +1,7 @@
 import React from 'react';
 import MenuPage from '../component/menuPage';
 import MenuApi from '../api/listMenuApi';
+import ConfirmModal from '../common/ConfirmModal';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import * as menuAction from '../actions/menuAction';
@@ -18,24 +19,31 @@ class MainMenuPage extends React.Component {
             display:"hide",
             button:"hide",
             newMenu: {image: "AyamKremes", name:"", description:"", price:0, quantity:0},
-            order: "hide "
+			order: "hide ",
+			orderDetails: {name:"", table:""},
+			showModal:"hide"
 		};
         this.updateQuantity = this.updateQuantity.bind(this);	
-        this.saveOrder = this.saveOrder.bind(this);
+		this.saveOrder = this.saveOrder.bind(this);
+		this.dataInputChange = this.dataInputChange.bind(this);
+		this.closeModal = this.closeModal.bind(this);
+		this.toCashierPage = this.toCashierPage.bind(this);
     }
 
 	componentDidMount() {
-		if (!this.props.addOrder) {
+		const actualOrder = this.props.addOrder;
+		if (!actualOrder) {
 			MenuApi.getAllMenu().then( (menu) => { this.setState({menu: menu}); });
 			this.calculateTotalPrice();
 			return;
 		} 
-		MenuApi.updateMenuOrder(this.props.addOrder.orderList)
+		MenuApi.updateMenuOrder(actualOrder.orderList)
 		.then(menuOrder => this.setState({menu: menuOrder}));
 
 		this.setState({
 			order:'list-order sticky',
-			dataOrder: this.props.addOrder.orderList
+			dataOrder: this.props.addOrder.orderList,
+			orderDetails: {name: actualOrder.name, table: actualOrder.tableNumber}
 		});
 		this.calculateTotalPrice();
 	}    
@@ -108,15 +116,74 @@ class MainMenuPage extends React.Component {
 		},0);
     }
 
-    saveOrder() {
-		let order = Object.assign([], this.state.dataOrder);
-		sessionStorage.setItem('orderMenu', JSON.stringify(order));
-		if (this.props.idOrder) {
-			this.props.history.push('/cashier/'+ this.props.idOrder);
-			return ;
-		}
-		this.props.history.push('/cashier');
+	saveOrder() {
+		if (this.state.orderDetails['name'] == "" || this.state.orderDetails['table'] == "") {
+            return Toastr.warning('Please fill customer and table name!');
+        } 
+		this.setState({showModal: "modals"});	
 	}
+
+	orderDetails() {
+        const newDate = new Date();
+        const dateString = newDate.getDate() + "/" + (newDate.getMonth()+1)  + "/" + newDate.getFullYear();
+		const time = newDate.getTime();
+		const details = Object.assign({}, this.state.orderDetails);
+		const order = Object.assign([], this.state.dataOrder);
+        const cashier = sessionStorage.getItem('currentUserLogin');
+        const history = Object.assign({}, this.props.order.slice(-1)[0]);
+        const orderNumb = history['orderNumber']+ 1;
+		const idNumber = orderNumb + newDate.getDate() + "" + (newDate.getMonth()+1) + "" + newDate.getFullYear();
+		const orderDetail = {
+            id: idNumber,
+            timeOrder: time,
+            cashierIdentity: cashier, 
+            currentDate: dateString, 
+            orderNumber: orderNumb, 
+            tableNumber: details.table,
+            name: details.name,
+            paymentStatus: "Unpaid",
+			orderList: [...order],
+            totalAmount: this.state.totalPrice 
+        };
+        return orderDetail; 
+    }
+
+	dataInputChange(event) {
+        const field = event.target.name;
+        const data = Object.assign({}, this.state.orderDetails);
+        data[field] = event.target.value;
+        return this.setState({orderDetails: data});
+	}
+	
+	closeModal() {
+        this.setState({showModal: 'none'});
+	}
+	
+	toCashierPage() {
+		if (this.props.idOrder) {
+			const previoustOrder = this.props.addOrder;
+			const orders = Object.assign([], this.state.dataOrder);
+			const orderDetails = Object.assign({}, this.state.orderDetails);
+			previoustOrder['totalAmount'] = this.state.totalPrice;
+			previoustOrder['orderList'] = orders;
+			previoustOrder['name'] = orderDetails.name;
+			previoustOrder['tableNumber'] = orderDetails.table;
+			this.props.orderAction.updateOrder(previoustOrder);
+			this.props.history.push('/cashier/'+ this.props.idOrder);
+			return Toastr.success("Order Updated!");
+		}
+		const order = this.orderDetails();
+		const lastOrderNumb = this.props.order.slice(-1)[0];
+		if (order['orderNumber'] != lastOrderNumb['orderNUmber'] ) {
+			this.props.orderAction.saveOrder(order);
+			this.props.history.push('/cashier');
+			Toastr.success("Order tersimpan!");            
+			return;     
+		}
+		this.setState({showModal: "none"});
+        Toastr.error('Order already made!'); 
+	}
+
 
 	userCheck() {
         if (sessionStorage.getItem("currentUserLogin") == null ) {
@@ -127,12 +194,10 @@ class MainMenuPage extends React.Component {
 
 
 	render() {
-		this.props;
-		this.state;
-        this.userCheck();
-
+		this.userCheck();
 		return(
-			<MenuPage 
+			<div>
+				<MenuPage 
 				menu={this.state.menu}
 				onClick={this.updateQuantity} 	
 				dataOrder={this.state.dataOrder}
@@ -141,8 +206,20 @@ class MainMenuPage extends React.Component {
                 hideButton={this.state.button}       
                 newMenu={this.state.newMenu}     
                 hideOrder={this.state.order}
-                confirmOrder={this.saveOrder}
+				confirmOrder={this.saveOrder}
+				detailInputChange={this.dataInputChange}
+				orderDetails={this.state.orderDetails}
 			/>
+
+			<ConfirmModal 
+                modalStatement="Apa kamu yakin mau simpan order ini?"
+                yesClick={this.toCashierPage}
+                noClick={this.closeModal}
+                showModal={this.state.showModal}
+            />
+
+			</div>
+			
 			);
 	}
 }

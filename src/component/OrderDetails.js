@@ -9,8 +9,8 @@ const OrderDetails = ({orderDetails, tableChange}) => {
             <pre> Order Number  : {orderDetails.orderNumber}</pre>
             <pre> Cashier       : {orderDetails.cashierIdentity}</pre>
             <pre> Date          : {orderDetails.currentDate} </pre>
-            <pre> Name          : <input value={orderDetails.name} onChange={tableChange} name="name" /> </pre>
-            <pre> Table         : <input value={orderDetails.table} onChange={tableChange} name="table" type="number" /></pre>            
+            <pre> Name          : {orderDetails.name} </pre>
+            <pre> Table         : {orderDetails.tableNumber} </pre>            
             </div>
         </div>
     );
