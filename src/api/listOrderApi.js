@@ -6,10 +6,12 @@ let orderHistory = [
         cashierIdentity: "mirdsm", 
         currentDate: "4/2/2020 ", 
         orderNumber: 0, 
-        table: "6",
+        tableNumber: "6",
         name: "Caca",
-        status: "Unpaid",
-        totalAmount: 20000  
+        paymentStatus: "Unpaid",
+        totalAmount: 20000,
+        id: "123123",
+        orderList: []  
     }
 ];
 
