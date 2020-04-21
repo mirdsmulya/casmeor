@@ -18,7 +18,8 @@ class AdministratorPage extends React.Component {
             button:"btn btn-danger delete-button",
             order: "hide",
             pictures: [], 
-            uploadTextButton: 'Choose imagess'
+            uploadTextButton: 'Choose imagess',
+            orderDetails: {name:"", table:""}
         };
         this.deleteButton = this.deleteButton.bind(this);
         this.saveButton = this.saveButton.bind(this);
@@ -83,6 +84,7 @@ class AdministratorPage extends React.Component {
                 hideOrder={this.state.order}
                 upload={this.pictureUpload}
                 uploadTextButton={this.state.uploadTextButton}
+                orderDetails={this.state.orderDetails}
                 
                 />
             </div>
