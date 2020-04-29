@@ -4,6 +4,7 @@ import ManageAccount from '../component/ManageAccount';
 import Toastr from 'toastr';
 import AccountList from '../component/AccountList';
 import ListAccountApi from '../api/listAccountApi';
+import ConfirmModal from '../common/ConfirmModal';
 
 class AccountPage extends React.Component {
     constructor(props, context) {
@@ -12,10 +13,13 @@ class AccountPage extends React.Component {
             account: [],
             newAccount: {},
             roleOptions: [{input:"Manager"}, {input:"Owner"}, {input:"Staff"}],
-            confirmPassword: ""
+            confirmPassword: "",
+            showModal: "hide"
         };
         this.dataInputChange = this.dataInputChange.bind(this);
         this.onSave = this.onSave.bind(this);
+        this.closeModal = this.closeModal.bind(this);
+        this.forwardModal = this.forwardModal.bind(this);
     }
 
     componentDidMount() {
@@ -44,10 +48,11 @@ class AccountPage extends React.Component {
 
     }
 
-    onSave() {
+    forwardModal() {
         const newAccount = Object.assign({}, this.state.newAccount);
         const accounts =  Object.assign([], this.state.account);
         const Obj = Object.values(newAccount);
+        this.setState({showModal: "hide"})
         
         if (Obj.length < 5 ||  this.checkInput(Obj)) {
             return Toastr.warning("All field must be filled!");
@@ -63,10 +68,21 @@ class AccountPage extends React.Component {
 
         ListAccountApi.saveAccount(newAccount)
         .then(account => {
-            this.setState({account: account});
+            this.setState({ account: account,
+                            newAccount: [],
+                            confirmPassword: ""
+                        });
             Toastr.success("User creation success!");
             }
         );
+    }
+
+    closeModal() {
+        this.setState({showModal: "hide"});
+    }
+    
+    onSave() {
+        this.setState({showModal: 'modals'});
     }
 
     userCheck() {
@@ -78,11 +94,13 @@ class AccountPage extends React.Component {
     
     render() {
         this.userCheck();
+        this.state;
+        debugger;
         return(
             <div className="main">
                 <Sidebar />
                 <ManageAccount 
-                    data={this.state.account}
+                    data={this.state.newAccount}
                     options={this.state.roleOptions}
                     onChange={this.dataInputChange}
                     onSave={this.onSave}
@@ -90,6 +108,13 @@ class AccountPage extends React.Component {
                 
                 />
                 <AccountList accounts={this.state.account}/>
+                <ConfirmModal 
+                    modalStatement="Apa kamu yakin ingin save akun ini?"
+                    yesClick={this.forwardModal}
+                    noClick={this.closeModal}
+                    showModal={this.state.showModal}
+                
+                />
             </div>
         );
     }
