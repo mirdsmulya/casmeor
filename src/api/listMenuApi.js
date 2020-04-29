@@ -7,28 +7,32 @@ let menu = [
         name: "Ayam Taliwang Bakar",
         description: "Nasi, ayam taliwang",
         price: 32000,
-        quantity: 0
+        quantity: 0,
+        id: "qwqwe"
     },
     {
         image: "AyamBali",
         name: "Ayam Bumbu Bali",
         description: "Nasi, ayam bumbu bali, sambel, tahu dan tempe",
         price: 40000,
-        quantity: 0
+        quantity: 0,
+        id: "qwqde"
     },
     {
         image: "AyamGeprek",
         name: "Ayam Geprek",
         description: "Nasi, ayam bumbu bali, sambel, tahu dan tempe aaaaaaaaaaaaa",
         price: 15000,
-        quantity: 0
+        quantity: 0,
+        id: "qfqwe"
     },
     {
         image: "AyamKremes",
         name: "Ayam Kremes Medan",
         description: "Nasi, ayam bumbu bali, sambel, tahu dan tempe",
         price: 17000,
-        quantity: 0
+        quantity: 0,
+        id: "qwvwe"
     }
 
 ];
