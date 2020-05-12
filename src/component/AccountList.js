@@ -1,7 +1,7 @@
 import React from 'react';
 import AccountInfo from '../component/AccountInfo';
 
-const AccountList = ({accounts}) => {
+const AccountList = ({accounts, delAccount}) => {
     return(
         <div className="manage-account">
             <table className="table">
@@ -15,7 +15,7 @@ const AccountList = ({accounts}) => {
             </thead>
             <tbody>
         {accounts.map(account =>  
-                <AccountInfo key={account.nip} account={account} />
+                <AccountInfo key={account.nip} account={account} delAccount={delAccount} />
                 )}
         </tbody>
         </table>
