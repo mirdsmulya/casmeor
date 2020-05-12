@@ -20,6 +20,7 @@ class AccountPage extends React.Component {
         this.onSave = this.onSave.bind(this);
         this.closeModal = this.closeModal.bind(this);
         this.forwardModal = this.forwardModal.bind(this);
+        this.deleteAccount = this.deleteAccount.bind(this);
     }
 
     componentDidMount() {
@@ -52,14 +53,14 @@ class AccountPage extends React.Component {
         const newAccount = Object.assign({}, this.state.newAccount);
         const accounts =  Object.assign([], this.state.account);
         const Obj = Object.values(newAccount);
-        this.setState({showModal: "hide"})
+        this.setState({showModal: "hide"});
         
         if (Obj.length < 5 ||  this.checkInput(Obj)) {
             return Toastr.warning("All field must be filled!");
         }
 
         if (newAccount.password !== this.state.confirmPassword) {
-            return Toastr.error("Passowrd is not confirm!");
+            return Toastr.error("Passowrd is not match!");
         }
 
         if (accounts.findIndex(acc => acc.nip == newAccount.nip) >= 0) {
@@ -67,14 +68,15 @@ class AccountPage extends React.Component {
         }
 
         ListAccountApi.saveAccount(newAccount)
-        .then(account => {
-            this.setState({ account: account,
-                            newAccount: [],
-                            confirmPassword: ""
-                        });
-            Toastr.success("User creation success!");
-            }
-        );
+        .then(res => {
+            if (res) {
+                this.setState({ account: [...accounts, newAccount],
+                                newAccount: [],
+                                confirmPassword: ""
+                });
+                return Toastr.success("User creation success!");
+            } Toastr.error("Server is busy!");
+        });
     }
 
     closeModal() {
@@ -85,17 +87,28 @@ class AccountPage extends React.Component {
         this.setState({showModal: 'modals'});
     }
 
+    deleteAccount(event) {
+        const nip = event.target.id;
+        const accounts = Object.assign([], this.state.account);
+        const newAccounts = accounts.filter( acc => acc.nip != nip);
+        ListAccountApi.deleteAccount(nip)
+        .then(res => {
+            if (res) {
+                this.setState({account: newAccounts});
+                return Toastr.success('Deleting user success!');
+            } Toastr.error('Deleting user failed!');
+        });
+    }
+
     userCheck() {
         if (sessionStorage.getItem("currentUserLogin") == null ) {
             this.props.history.push('/login');
-            Toastr.info("Login Required")  ;
+            Toastr.info("Login Required");
         }
     }
     
     render() {
         this.userCheck();
-        this.state;
-        debugger;
         return(
             <div className="main">
                 <Sidebar />
@@ -107,7 +120,7 @@ class AccountPage extends React.Component {
                     confirmPassword={this.state.confirmPassword}
                 
                 />
-                <AccountList accounts={this.state.account}/>
+                <AccountList accounts={this.state.account} delAccount={this.deleteAccount}/>
                 <ConfirmModal 
                     modalStatement="Apa kamu yakin ingin save akun ini?"
                     yesClick={this.forwardModal}
