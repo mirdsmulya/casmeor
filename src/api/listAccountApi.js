@@ -14,37 +14,52 @@ let account = [
 
 
 class ListAccountApi {
+
     static getAllAccount() {
         return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve(Object.assign([],account));
-                debugger;
-            },0);
+            const urlFetch = fetch('http://localhost:3000/account');
+            urlFetch.then( res => {
+                if (res.status === 200) { return res.json(); } 
+            }).then(result => resolve(result.values));
         });
-
     }
-
-
+   
     static saveAccount(newAccount) {
         return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                account = [newAccount, ...account];
-                resolve(Object.assign([],account));
-                debugger;
-            },0);
+            const accountData = [Object.values(newAccount)];
+            const postMethod = {
+                method: 'POST', 
+                mode: 'cors', 
+                cache: 'no-cache', 
+                headers: {
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(accountData) 
+            };
+            
+            const urlFetch = fetch('http://localhost:3000/saveAccount', postMethod);
+            urlFetch.then( res => {
+                const result = res.status === 200 ? resolve(true) : resolve(false);
+            });
         });
-
     }
 
     static deleteAccount(nip) {
         return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                
-                let dataIndex = account.findIndex(a => a.nip == nip);
-                account.splice(dataIndex, 1);
-                resolve(Object.assign([],nip));
-                debugger;
-            },0);
+            const deleteMethod = {
+                method: 'DELETE', 
+                mode: 'cors', 
+                cache: 'no-cache', 
+                headers: {
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify([nip]) 
+            };
+            
+            const urlFetch = fetch('http://localhost:3000/deleteAccount', deleteMethod);
+            urlFetch.then( res => {
+                const result = res.status === 200 ? resolve(true) : resolve(false);
+            });
         });
 
     }
@@ -61,7 +76,6 @@ class ListAccountApi {
                     }
                 }
                 resolve(result);
-                debugger;
             },0);
         });
 
