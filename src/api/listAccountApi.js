@@ -1,16 +1,5 @@
 
-
-
-let account = [
-    {
-        name: "Mirdan Syahid",
-        nip: "MSA",
-        username: "mirdsm",
-        role:"Owner",
-        password:"jajaja"
-        
-    }
-];
+import passwordHash from 'password-hash';
 
 
 class ListAccountApi {
@@ -26,6 +15,7 @@ class ListAccountApi {
    
     static saveAccount(newAccount) {
         return new Promise((resolve, reject) => {
+            newAccount['password'] = passwordHash.generate(newAccount.password);
             const accountData = [Object.values(newAccount)];
             const postMethod = {
                 method: 'POST', 
@@ -66,21 +56,20 @@ class ListAccountApi {
 
     static checkCredentials(credentials) {
         return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                let result = false;
-                let dataIndex = account.findIndex(a => a.username == credentials.username );
+            const urlFetch = fetch('http://localhost:3000/account');
+            urlFetch.then( res => {
+                if (res.status === 200) { return res.json(); } 
+            }).then(result => {
+                const accounts = result.values;
+                const dataIndex = accounts.findIndex(account => account.username == credentials.username );
                 if (dataIndex !== -1) {
-                    let tempAccount = account[dataIndex];
-                    if (tempAccount['password'] == credentials.password) {
-                        result = true;
-                    }
+                    const tempAccount = accounts[dataIndex];
+                    return resolve(passwordHash.verify(credentials.password,tempAccount.password));
                 }
-                resolve(result);
-            },0);
+                resolve(false);
+            });  
         });
-
     }
-
 }
 
 export default ListAccountApi;
