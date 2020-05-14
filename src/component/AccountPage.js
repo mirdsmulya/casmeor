@@ -111,7 +111,7 @@ class AccountPage extends React.Component {
         this.userCheck();
         return(
             <div className="main">
-                <Sidebar />
+                <Sidebar props={this.props.history}/>
                 <ManageAccount 
                     data={this.state.newAccount}
                     options={this.state.roleOptions}

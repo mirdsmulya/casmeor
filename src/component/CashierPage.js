@@ -84,7 +84,7 @@ class CashierPage extends React.Component {
         this.userCheck();
         return(
             <div className="main">
-                <Sidebar/>
+                <Sidebar props={this.props.history}/>
 
                 <OrderHistory 
                     orderHistory={this.props.order}

@@ -46,7 +46,7 @@ class LoginPage extends React.Component {
         
         return(
             <div className="main login-page">              
-                <Sidebar />
+                <Sidebar signOut="hide"/>
                 <LoginBox 
                     user={this.state.user}
                     onChange={this.dataInputChange}

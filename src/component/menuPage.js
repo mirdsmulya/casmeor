@@ -5,11 +5,11 @@ import MenuInput from './MenuInput';
 import OrderBoard from './orderBoard';
 
 
-const MenuPage = ({confirmOrder, uploadTextButton, menu, onClick, dataOrder, totalPrice, display, hideButton, deleteButton, onChange, newMenu, saveButton, hideOrder, upload, detailInputChange, orderDetails}) => {
+const MenuPage = ({props, confirmOrder, uploadTextButton, menu, onClick, dataOrder, totalPrice, display, hideButton, deleteButton, onChange, newMenu, saveButton, hideOrder, upload, detailInputChange, orderDetails}) => {
     return (
         <div className="main">
 				
-				<Sidebar />
+				<Sidebar props={props} />
 				<div className="line-menu">
                     <MenuInput display={display} uploadTextButton={uploadTextButton} onChange={onChange} newMenu={newMenu} saveButton={saveButton} upload={upload}/>
                     {menu.map(dataMenu =>

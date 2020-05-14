@@ -85,6 +85,7 @@ class AdministratorPage extends React.Component {
                 upload={this.pictureUpload}
                 uploadTextButton={this.state.uploadTextButton}
                 orderDetails={this.state.orderDetails}
+                props={this.props.history}
                 
                 />
             </div>

@@ -209,6 +209,7 @@ class MainMenuPage extends React.Component {
 				confirmOrder={this.saveOrder}
 				detailInputChange={this.dataInputChange}
 				orderDetails={this.state.orderDetails}
+				props={this.props.history}
 			/>
 
 			<ConfirmModal 

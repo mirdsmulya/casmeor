@@ -1,21 +1,22 @@
 import React from 'react';
 import { Link, IndexLink } from 'react-router';
+import Toastr from 'toastr';
 
-const Sidebar = () => {
-    let buttonText = "Sign Out";
-    let username =  sessionStorage.getItem("currentUserLogin");
+const Sidebar = (properties) => {
+    const username =  sessionStorage.getItem("currentUserLogin");
+    const sidebar = username ? "sidebar" : "hide";
     return (
 
         <div className="fixed-sidebar ">
 				<div className="sticky ">
 				<div className="header-logo">
                 <div className="">
-                <button className="" onClick={() => {sessionStorage.removeItem("currentUserLogin"); this.props.history.push('/login');}}>{buttonText}</button>
+                <button className={properties.signOut} onClick={() => {sessionStorage.removeItem("currentUserLogin"); properties.props.push('/login'); Toastr.info("Sign Out");}}>Sign Out</button>
                                     <p className="sidebar-text">{username}</p>
                 </div>  
 
                 </div>
-                     <div className="sidebar">
+                     <div className={sidebar}>
                             
                     <IndexLink to="/"  activeClassName="active" className="sidebar-text" > 
                     <div className="sidebar-text-box">Menu and Order</div>
