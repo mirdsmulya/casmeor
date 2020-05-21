@@ -2,7 +2,6 @@ import React from 'react';
 import OrderList from '../common/orderList';
 
 const OrderBoard = ({buttonText,confirmOrder, hideOrder, dataOrder,totalPrice, orderLine, orderDetails, detailInputChange}) => {
-    debugger
     return (
         <div className={orderLine}>
 			<div className={hideOrder}>
