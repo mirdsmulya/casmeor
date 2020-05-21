@@ -1,6 +1,7 @@
 import React from 'react';
 import MenuPage from '../component/menuPage';
 import MenuApi from '../api/listMenuApi';
+import OrderApi from '../api/listOrderApi';
 import ConfirmModal from '../common/ConfirmModal';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -31,22 +32,39 @@ class MainMenuPage extends React.Component {
     }
 
 	componentDidMount() {
-		const actualOrder = this.props.addOrder;
-		if (!actualOrder) {
+		const stateOrders = Object.assign([], this.props.order);
+		const idOrder = this.props.idOrder
+
+		if (!this.props.idOrder) {
 			MenuApi.getAllMenu().then( (menu) => { this.setState({menu: menu}); });
 			this.calculateTotalPrice();
 			return;
 		} 
-		MenuApi.updateMenuOrder(actualOrder.orderList)
-		.then(menuOrder => this.setState({menu: menuOrder}));
 
-		this.setState({
-			order:'list-order sticky',
-			dataOrder: this.props.addOrder.orderList,
-			orderDetails: {name: actualOrder.name, table: actualOrder.tableNumber}
+		this.actualOrder(idOrder, stateOrders).then( actualOrder => {
+			MenuApi.updateMenuOrder(actualOrder.orderList)
+			.then(menuOrder => this.setState({
+				menu: menuOrder,
+				order:'list-order sticky',
+				dataOrder: actualOrder.orderList,
+				orderDetails: {name: actualOrder.name, table: actualOrder.tableNumber}
+			}));
+			this.calculateTotalPrice();
+		});		
+	}
+	
+	actualOrder(idOrder, stateOrders) {
+		let order, items;
+		return OrderApi.getItemMenu()
+		.then( res => {
+			order = getOrderState(idOrder, stateOrders);
+			items = getItemMenu(idOrder, res);
+			order['orderList'] = items;
+			return order;
 		});
-		this.calculateTotalPrice();
-	}    
+	}
+	
+
 	updateQuantity(event, operation) {
 		const field = event.target.name;
 		const menu = Object.assign([], this.state.menu);
@@ -134,7 +152,7 @@ class MainMenuPage extends React.Component {
         const orderNumb = history['orderNumber']+ 1;
 		const idNumber = orderNumb + newDate.getDate() + "" + (newDate.getMonth()+1) + "" + newDate.getFullYear();
 		const orderDetail = {
-            id: idNumber,
+            id: time,
             timeOrder: time,
             cashierIdentity: cashier, 
             currentDate: dateString, 
@@ -142,8 +160,8 @@ class MainMenuPage extends React.Component {
             tableNumber: details.table,
             name: details.name,
             paymentStatus: "Unpaid",
-			orderList: [...order],
-            totalAmount: this.state.totalPrice 
+			totalAmount: this.state.totalPrice,
+			orderList: [...order] 
         };
         return orderDetail; 
     }
@@ -168,14 +186,15 @@ class MainMenuPage extends React.Component {
 			previoustOrder['orderList'] = orders;
 			previoustOrder['name'] = orderDetails.name;
 			previoustOrder['tableNumber'] = orderDetails.table;
-			this.props.orderAction.updateOrder(previoustOrder);
+			this.props.orderAction.updateOrder(previoustOrder, this.props.order);
 			this.props.history.push('/cashier/'+ this.props.idOrder);
 			return Toastr.success("Order Updated!");
 		}
 		const order = this.orderDetails();
 		const lastOrderNumb = this.props.order.slice(-1)[0];
+		const currentHistory = Object.assign([], this.props.order);
 		if (order['orderNumber'] != lastOrderNumb['orderNUmber'] ) {
-			this.props.orderAction.saveOrder(order);
+			this.props.orderAction.saveOrder(order, currentHistory);
 			this.props.history.push('/cashier');
 			Toastr.success("Order tersimpan!");            
 			return;     
@@ -225,8 +244,13 @@ class MainMenuPage extends React.Component {
 	}
 }
 
-export function getOrder(id, ordersHistory) {
+export function getOrderState(id, ordersHistory) {
 	const data = ordersHistory.find( orders => orders.id == id);
+	return data;
+}
+
+export function getItemMenu(id, items) {
+	const data = items.filter(item => item.orderId == id);
 	return data;
 }
 
@@ -234,7 +258,7 @@ export function mapStateToProps(state,ownProps) {
 	const idOrder = ownProps.params.id;
 	let addOrder;
 	if (idOrder) {
-		addOrder = getOrder(idOrder, state.orders);
+		addOrder = getOrderState(idOrder, state.orders);
 	}
     return {
         menus: state.menus,
