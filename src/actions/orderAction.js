@@ -23,7 +23,6 @@ export function updateOrderSuccess(orders) {
 
 export function loadOrder() {
     return function(dispatch) {
-        debugger;
         return OrderApi.getAllOrder().then( orders => {
             dispatch(loadOrderSuccess(orders));
         }).catch(error => {
@@ -32,10 +31,9 @@ export function loadOrder() {
     };
 }
 
-export function saveOrder(newOrder) {
+export function saveOrder(newOrder, currentOrder) {
     return function(dispatch) {
-        debugger;
-        return OrderApi.saveOrder(newOrder).then( orders => {
+        return OrderApi.saveOrder(newOrder, currentOrder).then( orders => {
             dispatch(saveOrderSuccess(orders));
         }).catch(error => {
             throw(error);       
@@ -43,10 +41,9 @@ export function saveOrder(newOrder) {
     };
 }
 
-export function updateOrder(updatedOrder) {
+export function updateOrder(updatedOrder, orderList) {
     return function(dispatch) {
-        debugger;
-        return OrderApi.updateOrder(updatedOrder).then( orders => {
+        return OrderApi.updateOrder(updatedOrder, orderList).then( orders => {
             dispatch(updateOrderSuccess(orders));
         }).catch(error => {
             throw(error);
