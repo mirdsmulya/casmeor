@@ -51,6 +51,16 @@ export function updateOrder(updatedOrder, orderList) {
     };
 }
 
+export function deleteOrder(orderId, orderList) {
+    return function(dispatch) {
+        return OrderApi.deleteOrder(orderId, orderList).then( orders => {
+            dispatch(deleteOrderSuccess(orders));
+        }).catch(error => {
+            throw(error);
+        });
+    };
+}
+
 
 
 
