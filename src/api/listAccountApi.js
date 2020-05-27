@@ -62,11 +62,11 @@ class ListAccountApi {
             }).then(result => {
                 const accounts = result.values;
                 const dataIndex = accounts.findIndex(account => account.username == credentials.username );
-                if (dataIndex !== -1) {
-                    const tempAccount = accounts[dataIndex];
-                    return resolve(passwordHash.verify(credentials.password,tempAccount.password));
-                }
-                resolve(false);
+                const tempAccount = accounts[dataIndex];
+                const name = tempAccount.name.split(' ');
+                if (dataIndex !== -1 && (passwordHash.verify(credentials.password,tempAccount.password))) {
+                    return resolve(name[0]);
+                } resolve(false);
             });  
         });
     }
