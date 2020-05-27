@@ -1,19 +1,4 @@
 
-let orderHistory = [
-    {
-        cashierIdentity: "mirdsm", 
-        currentDate: "4/2/2020 ",
-        id: "123123",
-        name: "Caca",
-        orderNumber: 0, 
-        paymentStatus: "Unpaid",
-        tableNumber: "6",
-        timeOrder: "",
-        totalAmount: 20000,
-        orderList: []
-    }
-];
-
 
 class OrderApi {
     static getAllOrder() {
@@ -42,23 +27,6 @@ class OrderApi {
             urlFetch.then( res => {
                 const result = res.status === 200 ? resolve([...currentOrder, newOrder]) : resolve(currentOrder);
             });
-        });
-    }
-
-    static getAllHistoryOrder() {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve(Object.assign([], orderHistory));
-            },0);
-        });
-    }
-
-    static saveOrderHistory(newOrder) {
-        return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                orderHistory = [...orderHistory, newOrder];
-                resolve(Object.assign([], orderHistory));
-            },0);
         });
     }
 
