@@ -13,6 +13,7 @@ const OrderHistory = ({orderHistory, addOrder, confirmPayment, printBill, button
                     <th>Table</th>
                     <th>Total Amount</th>
                     <th>Payment Status</th>
+                    <th>Cashier</th>
                 </tr> 
             </thead>
             <tbody>
