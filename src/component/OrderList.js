@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-const OrderList = ({orders, printBill, addOrder, confirmPayment}) => {
+const OrderList = ({orders, printBill, addOrder, confirmPayment, deleteOrder}) => {
     let buttonDisable = false ;
     if (orders.paymentStatus == "PAID") {
         buttonDisable = true;
@@ -18,7 +18,7 @@ const OrderList = ({orders, printBill, addOrder, confirmPayment}) => {
                 <td><button className="btn" onClick={addOrder} name={orders.id} disabled={buttonDisable}>Add Order</button> </td>
                 <td><button className="btn" onClick={confirmPayment} name={orders.id} disabled={buttonDisable}>Confirm Payment</button> </td>
                 <td><button className="btn" onClick={printBill} name={orders.id}>Print Bill</button> </td>
-                <td><button className="btn btn-danger" onClick="" name={orders.id} >Delete</button> </td>
+                <td><button className="btn btn-danger" onClick={deleteOrder} name={orders.id} >Delete</button> </td>
 
             </tr>
     );

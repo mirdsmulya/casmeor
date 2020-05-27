@@ -17,13 +17,15 @@ class CashierPage extends React.Component {
             totalPrice: 0,
             orderDetails: {name:"", table:""},
             orderHistory: [],
-            showModal: "none"
+            showModal: "none",
+            orderId: ""
         };
     this.dataInputChange = this.dataInputChange.bind(this);
     this.addOrder = this.addOrder.bind(this);
     this.confirmPayment = this.confirmPayment.bind(this);
     this.closeModal = this.closeModal.bind(this);
-    this.backToMenu = this.backToMenu.bind(this);
+    this.deleteOrder = this.deleteOrder.bind(this);
+    this.modalAction = this.modalAction.bind(this);
     }
 
     componentWillReceiveProps() {
@@ -46,14 +48,12 @@ class CashierPage extends React.Component {
         const idOrder = event.target.name;
         const orderHistory = Object.assign([], this.props.order);
         const orderData = orderHistory.find( order => order.id == idOrder);
-        debugger;
         if (orderData.paymentStatus == "PAID") {
             return Toastr.warning('Payment already made!');
         }
 
         let orderUpdate = Object.assign({}, {paymentStatus: "PAID"});
         orderUpdate = Object.assign({}, orderData, orderUpdate);
-        debugger;
         this.props.orderAction.updateOrder(orderUpdate, orderHistory);
         this.setState({orderDetails: [], dataOrder: [], totalAmount: []});
         Toastr.success('Payment from '+ orderData.name +' accepted!'); 
@@ -61,17 +61,19 @@ class CashierPage extends React.Component {
 
     closeModal() {
         this.setState({showModal: 'none'});
-        if (this.props.idOrder) {
-            return Toastr.info("Please confirm the order");
-        }
-        Toastr.info("Please fill name and table to confim the order!");
     }
 
-    backToMenu() {
-        if (this.props.idOrder) {
-            return this.props.history.push('/'+ this.props.idOrder); 
-        }
-        this.props.history.push('/');
+    modalAction(event) {
+        this.setState({
+            showModal: 'modals',
+            orderId: event.target.name
+        });       
+    }
+
+    deleteOrder() {
+        const orders = Object.assign([],this.props.order);
+        this.setState({showModal: 'hide'});
+        this.props.orderAction.deleteOrder(this.state.orderId, orders);
     }
 
     userCheck() {
@@ -92,12 +94,13 @@ class CashierPage extends React.Component {
                     addOrder={this.addOrder}
                     buttonDisable={this.state.buttonDisable}
                     confirmPayment={this.confirmPayment}
+                    deleteOrder={this.modalAction}
                 
                 />
                 <ConfirmModal 
-                    modalStatement="Apa kamu yakin mau simpan order ini?"
-                    yesClick={this.closeModal}
-                    noClick={this.backToMenu}
+                    modalStatement="Apa kamu yakin mau hapus order ini?"
+                    yesClick={this.deleteOrder}
+                    noClick={this.closeModal}
                     showModal={this.state.showModal}
                 />
             </div>
