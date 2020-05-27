@@ -46,14 +46,15 @@ class CashierPage extends React.Component {
         const idOrder = event.target.name;
         const orderHistory = Object.assign([], this.props.order);
         const orderData = orderHistory.find( order => order.id == idOrder);
-
+        debugger;
         if (orderData.paymentStatus == "PAID") {
             return Toastr.warning('Payment already made!');
         }
 
         let orderUpdate = Object.assign({}, {paymentStatus: "PAID"});
         orderUpdate = Object.assign({}, orderData, orderUpdate);
-        this.props.orderAction.updateOrder(orderUpdate);
+        debugger;
+        this.props.orderAction.updateOrder(orderUpdate, orderHistory);
         this.setState({orderDetails: [], dataOrder: [], totalAmount: []});
         Toastr.success('Payment from '+ orderData.name +' accepted!'); 
     }
