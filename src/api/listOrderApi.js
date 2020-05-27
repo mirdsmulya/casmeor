@@ -83,7 +83,7 @@ class OrderApi {
                     Toastr.success('Delete order success');
                     resolve(orders);
 
-                } Toastr.error('Delete order failed')
+                } else {Toastr.error('Delete order failed')}
             });
         });
 
