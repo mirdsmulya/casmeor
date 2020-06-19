@@ -9,14 +9,13 @@ class ListAccountApi {
             const urlFetch = fetch('http://localhost:3000/account');
             urlFetch.then( res => {
                 if (res.status === 200) { return res.json(); } 
-            }).then(result => resolve(result.values));
+            }).then(result => resolve(result));
         });
     }
    
     static saveAccount(newAccount) {
         return new Promise((resolve, reject) => {
             newAccount['password'] = passwordHash.generate(newAccount.password);
-            const accountData = [Object.values(newAccount)];
             const postMethod = {
                 method: 'POST', 
                 mode: 'cors', 
@@ -24,12 +23,12 @@ class ListAccountApi {
                 headers: {
                 'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(accountData) 
+                body: JSON.stringify(newAccount) 
             };
             
-            const urlFetch = fetch('http://localhost:3000/saveAccount', postMethod);
+            const urlFetch = fetch('http://localhost:3000/account', postMethod);
             urlFetch.then( res => {
-                const result = res.status === 200 ? resolve(true) : resolve(false);
+                const result = res.status === 201 ? resolve(true) : resolve(false);
             });
         });
     }
@@ -42,11 +41,9 @@ class ListAccountApi {
                 cache: 'no-cache', 
                 headers: {
                 'Content-Type': 'application/json'
-                },
-                body: JSON.stringify([nip]) 
+                }
             };
-            
-            const urlFetch = fetch('http://localhost:3000/deleteAccount', deleteMethod);
+            const urlFetch = fetch('http://localhost:3000/account/'+ nip, deleteMethod);
             urlFetch.then( res => {
                 const result = res.status === 200 ? resolve(true) : resolve(false);
             });
@@ -60,11 +57,11 @@ class ListAccountApi {
             urlFetch.then( res => {
                 if (res.status === 200) { return res.json(); } 
             }).then(result => {
-                const accounts = result.values;
+                const accounts = result;
                 const dataIndex = accounts.findIndex(account => account.username == credentials.username );
                 const tempAccount = accounts[dataIndex];
-                const name = tempAccount.name.split(' ');
                 if (dataIndex !== -1 && (passwordHash.verify(credentials.password,tempAccount.password))) {
+                    const name = tempAccount.name.split(' ');
                     return resolve(name[0]);
                 } resolve(false);
             });  
