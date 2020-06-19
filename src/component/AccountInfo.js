@@ -6,9 +6,9 @@ const AccountInfo = ({account, delAccount}) => {
         <tr>
             <td>{account.name}</td>
             <td>{account.username}</td>
-            <td>{account.nip}</td>
+            <td>{account.id}</td>
             <td>{account.role}</td>
-            <td><button onClick={delAccount} id={account.nip}>Delete</button></td>
+            <td><button onClick={delAccount} id={account.id}>Delete</button></td>
         </tr>         
     );
 };

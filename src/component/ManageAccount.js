@@ -25,10 +25,10 @@ const ManageAccount = ({confirmPassword, data, onSave, onChange, options}) => {
             /> 
 
             <TextInput 
-                name="nip"
+                name="id"
                 type="string"
                 label="Nomor Induk Pegawai"
-                value={data.nip}
+                value={data.id}
                 onChange={onChange}          
             />
 

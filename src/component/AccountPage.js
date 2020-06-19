@@ -63,7 +63,7 @@ class AccountPage extends React.Component {
             return Toastr.error("Passowrd is not match!");
         }
 
-        if (accounts.findIndex(acc => acc.nip == newAccount.nip) >= 0) {
+        if (accounts.findIndex(acc => acc.id == newAccount.id) >= 0) {
             return Toastr.error("Account already created!");
         }
 
@@ -88,10 +88,10 @@ class AccountPage extends React.Component {
     }
 
     deleteAccount(event) {
-        const nip = event.target.id;
+        const id = event.target.id;
         const accounts = Object.assign([], this.state.account);
-        const newAccounts = accounts.filter( acc => acc.nip != nip);
-        ListAccountApi.deleteAccount(nip)
+        const newAccounts = accounts.filter( acc => acc.id != id);
+        ListAccountApi.deleteAccount(id)
         .then(res => {
             if (res) {
                 this.setState({account: newAccounts});

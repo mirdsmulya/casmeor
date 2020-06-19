@@ -15,7 +15,7 @@ const AccountList = ({accounts, delAccount}) => {
             </thead>
             <tbody>
         {accounts.map(account =>  
-                <AccountInfo key={account.nip} account={account} delAccount={delAccount} />
+                <AccountInfo key={account.id} account={account} delAccount={delAccount} />
                 )}
         </tbody>
         </table>
