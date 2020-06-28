@@ -3,16 +3,15 @@ import Toastr from 'toastr';
 class OrderApi {
     static getAllOrder() {
         return new Promise((resolve, reject) => {
-            const urlFetch = fetch('http://localhost:3000/orders');
+            const urlFetch = fetch('http://localhost:3000/order');
             urlFetch.then( res => {
-                if (res.status === 200) { return res.json(); } else {Toastr.error('Failed load data')}
-            }).then(result => resolve(result.values));
-        });
-        
+                if (res.status === 200) { return res.json(); } else {Toastr.error('Failed load data');}
+            }).then(result => resolve(result));
+        });    
     }
 
     static saveOrder(newOrder, currentOrder) {
-        return new Promise((resolve, reject) => {            
+        return new Promise((resolve, reject) => {  
             const postMethod = {
                 method: 'POST', 
                 mode: 'cors', 
@@ -23,14 +22,15 @@ class OrderApi {
                 body: JSON.stringify(newOrder) 
             };
             
-            const urlFetch = fetch('http://localhost:3000/saveOrder', postMethod);
+            const urlFetch = fetch('http://localhost:3000/order', postMethod);
             urlFetch.then( res => {
-                const result = res.status === 200 ? resolve([...currentOrder, newOrder]) : resolve(currentOrder);
+                const result = res.status === 201 ? resolve([...currentOrder, newOrder]) : resolve(currentOrder);
             });
         });
     }
 
-    static updateOrder(updatedOrder, orders) {
+    static updateOrder(updatedOrder, pastOrders, prevId) {
+        const orders = Object.assign([], pastOrders);
         return new Promise((resolve, reject) => {
             const putMethod = {
                 method: 'PUT', 
@@ -42,10 +42,10 @@ class OrderApi {
                 body: JSON.stringify(updatedOrder) 
             };
             
-            const urlFetch = fetch('http://localhost:3000/updateOrder', putMethod);
+            const urlFetch = fetch('http://localhost:3000/order/'+ prevId, putMethod);
             urlFetch.then( res => {
                 if (res.status === 200) {
-                    let orderIndex = orders.findIndex((a) => a.id == updatedOrder.id);
+                    let orderIndex = orders.findIndex((a) => a.id == prevId);
                     orders.splice(orderIndex, 1, updatedOrder);
                     resolve(Object.assign([], orders));   
                 } else {Toastr.error('Failed update data');}
@@ -53,14 +53,15 @@ class OrderApi {
         });   
     }
 
-    static getItemMenu() {
+    static getItemMenu(id) {
         return new Promise((resolve, reject) => {
-            const urlFetch = fetch('http://localhost:3000/getItemOrder');
+            const urlFetch = fetch('http://localhost:3000/order/'+ id);
             urlFetch.then( res => {
                 if (res.status === 200) { return res.json(); }
             })
             .then( result => {
-                resolve(result.values); });
+                resolve(result); 
+            });
         });
     }
 
@@ -72,18 +73,16 @@ class OrderApi {
                 cache: 'no-cache', 
                 headers: {
                 'Content-Type': 'application/json'
-                },
-                body: JSON.stringify([orderId]) 
+                }
             };
-            const urlFetch = fetch('http://localhost:3000/deleteOrder', deleteMethod);
+            const urlFetch = fetch('http://localhost:3000/order/'+ orderId, deleteMethod);
             urlFetch.then( res => {
                 if (res.status === 200) {
                     const dataIndex = orders.findIndex( (order) => order.id == orderId);
                     orders.splice(dataIndex, 1);
                     Toastr.success('Delete order success');
                     resolve(orders);
-
-                } else {Toastr.error('Delete order failed')}
+                } else {Toastr.error('Delete order failed');}
             });
         });
 
