@@ -54,16 +54,15 @@ class MainMenuPage extends React.Component {
 	}
 	
 	actualOrder(idOrder, stateOrders) {
-		let order, items;
-		return OrderApi.getItemMenu()
+		let order, items, newOrder;
+		return OrderApi.getItemMenu(idOrder)
 		.then( res => {
 			order = getOrderState(idOrder, stateOrders);
-			items = getItemMenu(idOrder, res);
-			order['orderList'] = items;
+			items = getItemMenu(res.orderList, this.props.menus);
+			newOrder = Object.assign({}, order, {orderList: items});
 			return order;
 		});
-	}
-	
+	}	
 
 	updateQuantity(event, operation) {
 		const field = event.target.name;
@@ -120,7 +119,6 @@ class MainMenuPage extends React.Component {
 			const lengthOrder = dataOrder.length;
 			let totalPrice =0;
 			for (let i=0; i < lengthOrder; i++) {
-                
                 const menu = dataOrder[i];
                 const quantity = menu['quantity'];
                 const price = menu['price'];
@@ -150,21 +148,38 @@ class MainMenuPage extends React.Component {
         const cashier = sessionStorage.getItem('currentUserLogin');
         const history = Object.assign({}, this.props.order.slice(-1)[0]);
         const orderNumb = history['orderNumber']+ 1;
-		const idNumber = orderNumb + newDate.getDate() + "" + (newDate.getMonth()+1) + "" + newDate.getFullYear();
 		const orderDetail = {
             id: time,
-            timeOrder: time,
             cashierIdentity: cashier, 
             currentDate: dateString, 
-            orderNumber: orderNumb, 
+			orderNumber: orderNumb, 
             tableNumber: details.table,
             name: details.name,
             paymentStatus: "Unpaid",
 			totalAmount: this.state.totalPrice,
-			orderList: [...order] 
-        };
+			orderList: this.addOrderListInventory(time, order) 
+		};
         return orderDetail; 
-    }
+	}
+	
+	addOrderListInventory(orderId, orderListMenu) {
+		const newOrderList = [];
+		const orderList = Object.assign([], orderListMenu);
+		for (let i =0; i < orderList.length; i++) {
+			const eachMenu = orderList[i];
+			let newUpdateOrder = eachMenu;
+			newUpdateOrder = Object.assign({},eachMenu,{orderId: orderId});
+			if (!eachMenu.menuId) {
+				newUpdateOrder = Object.assign({}, eachMenu, {
+					menuId: eachMenu.id,
+					orderId: orderId,
+					id: null
+				});
+			}
+			newOrderList.push(newUpdateOrder);
+		}
+		return newOrderList;
+	}
 
 	dataInputChange(event) {
         const field = event.target.name;
@@ -179,24 +194,28 @@ class MainMenuPage extends React.Component {
 	
 	toCashierPage() {
 		if (this.props.idOrder) {
-			const previoustOrder = this.props.addOrder;
+			const previoustOrder = Object.assign({},this.props.addOrder) ;
 			const orders = Object.assign([], this.state.dataOrder);
 			const orderDetails = Object.assign({}, this.state.orderDetails);
-			previoustOrder['totalAmount'] = this.state.totalPrice;
-			previoustOrder['orderList'] = orders;
-			previoustOrder['name'] = orderDetails.name;
-			previoustOrder['tableNumber'] = orderDetails.table;
-			this.props.orderAction.updateOrder(previoustOrder, this.props.order);
-			this.props.history.push('/cashier/'+ this.props.idOrder);
-			return Toastr.success("Order Updated!");
+			const newId = new Date();
+			const newOrder = Object.assign({}, previoustOrder, {
+				totalAmount: this.state.totalPrice,
+				id: newId.getTime(),
+				orderList: this.addOrderListInventory(newId.getTime(), orders),
+				name: orderDetails.name,
+				tableNumber: orderDetails.table
+			});
+			this.props.orderAction.updateOrder(newOrder, this.props.order, this.props.idOrder);
+			this.props.history.push('/cashier/'+ previoustOrder.id);
+			return;
 		}
+
 		const order = this.orderDetails();
 		const lastOrderNumb = this.props.order.slice(-1)[0];
 		const currentHistory = Object.assign([], this.props.order);
 		if (order['orderNumber'] != lastOrderNumb['orderNUmber'] ) {
 			this.props.orderAction.saveOrder(order, currentHistory);
 			this.props.history.push('/cashier');
-			Toastr.success("Order tersimpan!");            
 			return;     
 		}
 		this.setState({showModal: "none"});
@@ -249,9 +268,19 @@ export function getOrderState(id, ordersHistory) {
 	return data;
 }
 
-export function getItemMenu(id, items) {
-	const data = items.filter(item => item.orderId == id);
-	return data;
+export function getItemMenu( itemList, menusList) {
+	const menus = Object.assign([], menusList);
+	const items = Object.assign([], itemList);
+	const temp = [];
+	for (let i = 0; i < items.length; i++ ) {
+		const order = items[i];
+		const menu = menus.find( menu => menu.id == order.menuId);
+		debugger;
+		const newMenu =Object.assign({}, menu, {quantity: order.quantity, menuId: menu.id});
+		temp.push(newMenu);
+	}
+
+	return temp;
 }
 
 export function mapStateToProps(state,ownProps) {
