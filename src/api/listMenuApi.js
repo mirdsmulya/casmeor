@@ -42,22 +42,21 @@ let menu = [
 class MenuApi {
 
     static getAllMenu() {
-        debugger;
         return new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve(Object.assign([],menu));
-                debugger;
-            },0);
+            const urlFetch = fetch('http://localhost:3000/menu');
+            urlFetch.then( res => {
+                if (res.status == 200) {return res.json(); }
+
+            }).then( result => resolve(result));
+
         });
     }
     static deleteMenu(name) {
         return new Promise((resolve, reject) => {
             setTimeout(() => {
-                
                 let dataIndex = menu.findIndex(a => a.name == name);
                 menu.splice(dataIndex, 1);
                 resolve(Object.assign([],menu));
-                debugger;
             },0);
         });
 
@@ -68,7 +67,6 @@ class MenuApi {
             setTimeout(() => {
                 menu = [newMenu, ...menu];
                 resolve(Object.assign([],menu));
-                debugger;
             },0);
         });
 
@@ -82,7 +80,6 @@ class MenuApi {
                     let menuIndex = updateMenu.findIndex(a => a.name == menuOrder.name);
                     updateMenu.splice(menuIndex,1, menuOrder);    
                 }
-                debugger;
                 resolve(Object.assign([], updateMenu));
 
             },0);
