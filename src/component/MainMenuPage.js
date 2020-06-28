@@ -60,7 +60,7 @@ class MainMenuPage extends React.Component {
 			order = getOrderState(idOrder, stateOrders);
 			items = getItemMenu(res.orderList, this.props.menus);
 			newOrder = Object.assign({}, order, {orderList: items});
-			return order;
+			return newOrder;
 		});
 	}	
 
@@ -168,7 +168,7 @@ class MainMenuPage extends React.Component {
 		for (let i =0; i < orderList.length; i++) {
 			const eachMenu = orderList[i];
 			let newUpdateOrder = eachMenu;
-			newUpdateOrder = Object.assign({},eachMenu,{orderId: orderId});
+			newUpdateOrder = Object.assign({},eachMenu,{orderId: orderId, id: null});
 			if (!eachMenu.menuId) {
 				newUpdateOrder = Object.assign({}, eachMenu, {
 					menuId: eachMenu.id,
@@ -275,7 +275,6 @@ export function getItemMenu( itemList, menusList) {
 	for (let i = 0; i < items.length; i++ ) {
 		const order = items[i];
 		const menu = menus.find( menu => menu.id == order.menuId);
-		debugger;
 		const newMenu =Object.assign({}, menu, {quantity: order.quantity, menuId: menu.id});
 		temp.push(newMenu);
 	}
