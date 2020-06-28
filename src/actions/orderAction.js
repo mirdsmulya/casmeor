@@ -41,9 +41,9 @@ export function saveOrder(newOrder, currentOrder) {
     };
 }
 
-export function updateOrder(updatedOrder, orderList) {
+export function updateOrder(updatedOrder, orderList, prevId) {
     return function(dispatch) {
-        return OrderApi.updateOrder(updatedOrder, orderList).then( orders => {
+        return OrderApi.updateOrder(updatedOrder, orderList, prevId).then( orders => {
             dispatch(updateOrderSuccess(orders));
         }).catch(error => {
             throw(error);
