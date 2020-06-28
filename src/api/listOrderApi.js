@@ -47,6 +47,7 @@ class OrderApi {
                 if (res.status === 200) {
                     let orderIndex = orders.findIndex((a) => a.id == prevId);
                     orders.splice(orderIndex, 1, updatedOrder);
+                    Toastr.success("Order Updated!");
                     resolve(Object.assign([], orders));   
                 } else {Toastr.error('Failed update data');}
             });
