@@ -28,9 +28,11 @@ class CashierPage extends React.Component {
     this.modalAction = this.modalAction.bind(this);
     }
 
-    componentWillReceiveProps() {
-        this.setState({orderHistory: this.props.order});
-	}    
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.order !== this.state.orderHistory) {
+            this.setState({ orderHistory: nextProps.order });
+        }
+    }
 
     dataInputChange(event) {
         const field = event.target.name;
@@ -114,18 +116,11 @@ export function getOrder(idOrder, orderHistory) {
 }
 
 export function mapStateToProps(state,ownProps) {
-    const idOrder = ownProps.params.id;
-    let orderGet;
-    if (idOrder) {
-        orderGet = getOrder(idOrder, state.orders);
-    }
     const order = state.orders;
     const menus = state.menus;
     return {
         order: order,
-        menu: menus,
-        idOrder: idOrder,
-        orderGet: orderGet   
+        menu: menus
     };
 }
 
@@ -134,7 +129,6 @@ export function mapDispatchToProps(dispatch) {
         actions: bindActionCreators(menuAction, dispatch),
         orderAction: bindActionCreators(orderAction, dispatch)
     };
-    
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CashierPage);
