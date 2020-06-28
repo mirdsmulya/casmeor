@@ -18,13 +18,14 @@ class CashierPage extends React.Component {
             orderDetails: {name:"", table:""},
             orderHistory: [],
             showModal: "none",
-            orderId: ""
+            orderId: "",
+            modalStatement: ""
         };
     this.dataInputChange = this.dataInputChange.bind(this);
     this.addOrder = this.addOrder.bind(this);
     this.confirmPayment = this.confirmPayment.bind(this);
     this.closeModal = this.closeModal.bind(this);
-    this.deleteOrder = this.deleteOrder.bind(this);
+    this.yesClick = this.yesClick.bind(this);
     this.modalAction = this.modalAction.bind(this);
     }
 
@@ -56,9 +57,14 @@ class CashierPage extends React.Component {
 
         let orderUpdate = Object.assign({}, {paymentStatus: "PAID"});
         orderUpdate = Object.assign({}, orderData, orderUpdate);
-        this.props.orderAction.updateOrder(orderUpdate, orderHistory);
-        this.setState({orderDetails: [], dataOrder: [], totalAmount: []});
-        Toastr.success('Payment from '+ orderData.name +' accepted!'); 
+        this.props.orderAction.updateOrder(orderUpdate, orderHistory, orderUpdate.id);
+        this.setState({
+            orderDetails: [], 
+            dataOrder: [], 
+            totalAmount: [],
+            showModal: "modals",
+            modalStatement: "Print Bill?"
+        });
     }
 
     closeModal() {
@@ -68,11 +74,15 @@ class CashierPage extends React.Component {
     modalAction(event) {
         this.setState({
             showModal: 'modals',
-            orderId: event.target.name
+            orderId: event.target.name,
+            modalStatement: "Apa kamu yakin mau hapus order ini?"
         });       
     }
 
-    deleteOrder() {
+    yesClick() {
+        if (this.state.orderId == "") {
+            return Toastr.info("Bill Print!");
+        }
         const orders = Object.assign([],this.props.order);
         this.setState({showModal: 'hide'});
         this.props.orderAction.deleteOrder(this.state.orderId, orders);
@@ -100,8 +110,8 @@ class CashierPage extends React.Component {
                 
                 />
                 <ConfirmModal 
-                    modalStatement="Apa kamu yakin mau hapus order ini?"
-                    yesClick={this.deleteOrder}
+                    modalStatement={this.state.modalStatement}
+                    yesClick={this.yesClick}
                     noClick={this.closeModal}
                     showModal={this.state.showModal}
                 />
