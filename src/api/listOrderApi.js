@@ -24,7 +24,12 @@ class OrderApi {
             
             const urlFetch = fetch('http://localhost:3000/order', postMethod);
             urlFetch.then( res => {
-                const result = res.status === 201 ? resolve([...currentOrder, newOrder]) : resolve(currentOrder);
+                if (res.status == 201 ) {
+                    Toastr.success("Order saved!");
+                    resolve([...currentOrder, newOrder]);
+                } else {
+                    Toastr.error("Order not saved")
+                    resolve(currentOrder);}
             });
         });
     }
@@ -41,13 +46,13 @@ class OrderApi {
                 },
                 body: JSON.stringify(updatedOrder) 
             };
-            
             const urlFetch = fetch('http://localhost:3000/order/'+ prevId, putMethod);
             urlFetch.then( res => {
                 if (res.status === 200) {
                     let orderIndex = orders.findIndex((a) => a.id == prevId);
                     orders.splice(orderIndex, 1, updatedOrder);
-                    Toastr.success("Order Updated!");
+                    if (updatedOrder.paymentStatus != "PAID" ) {Toastr.success("Order Updated!");}
+                    else { Toastr.success('Payment from '+ updatedOrder.name +' accepted!'); }
                     resolve(Object.assign([], orders));   
                 } else {Toastr.error('Failed update data');}
             });
