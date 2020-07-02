@@ -31,7 +31,7 @@ class LoginPage extends React.Component {
 	}
 
     loginButton() {
-        ListAccountApi.checkCredentials(this.state.user)
+        ListAccountApi.login(this.state.user)
         .then(result => {
             if (!result) {
                 return Toastr.error('User or password might be wrong :(');          
