@@ -11,7 +11,12 @@ const Sidebar = (properties) => {
 				<div className="sticky ">
 				<div className="header-logo">
                 <div className="">
-                <button className={properties.signOut} onClick={() => {sessionStorage.removeItem("currentUserLogin"); properties.props.push('/login'); Toastr.info("Sign Out");}}>Sign Out</button>
+                <button className={properties.signOut} onClick={() => { sessionStorage.removeItem("expired_time"); 
+                                                                        sessionStorage.removeItem("access_token");
+                                                                        sessionStorage.removeItem("currentUserLogin"); 
+                                                                        properties.props.push('/login'); 
+                                                                        Toastr.info("Sign Out");
+                                                                        }}>Sign Out</button>
                                     <p className="sidebar-text">{username}</p>
                 </div>  
 
