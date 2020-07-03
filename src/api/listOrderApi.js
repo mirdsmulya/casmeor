@@ -17,7 +17,8 @@ class OrderApi {
                 mode: 'cors', 
                 cache: 'no-cache', 
                 headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+ sessionStorage.getItem('access_token') 
                 },
                 body: JSON.stringify(newOrder) 
             };
@@ -28,7 +29,7 @@ class OrderApi {
                     Toastr.success("Order saved!");
                     resolve([...currentOrder, newOrder]);
                 } else {
-                    Toastr.error("Order not saved")
+                    Toastr.error("Order not saved");
                     resolve(currentOrder);}
             });
         });
@@ -42,7 +43,8 @@ class OrderApi {
                 mode: 'cors', 
                 cache: 'no-cache', 
                 headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+ sessionStorage.getItem('access_token')
                 },
                 body: JSON.stringify(updatedOrder) 
             };
@@ -78,7 +80,9 @@ class OrderApi {
                 mode: 'cors', 
                 cache: 'no-cache', 
                 headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+ sessionStorage.getItem('access_token') 
+
                 }
             };
             const urlFetch = fetch('http://localhost:3000/order/'+ orderId, deleteMethod);

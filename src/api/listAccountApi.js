@@ -24,7 +24,8 @@ class ListAccountApi {
                 mode: 'cors', 
                 cache: 'no-cache', 
                 headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+ sessionStorage.getItem('access_token') 
                 },
                 body: JSON.stringify(newAccount) 
             };
@@ -43,7 +44,8 @@ class ListAccountApi {
                 mode: 'cors', 
                 cache: 'no-cache', 
                 headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer '+ sessionStorage.getItem('access_token') 
                 }
             };
             const urlFetch = fetch('http://localhost:3000/account/'+ nip, deleteMethod);
@@ -71,8 +73,9 @@ class ListAccountApi {
                 if (res.status == 201) {return res.json(); }
             }).then(result => {
                 const token = result.access_token;
-                sessionStorage.setItem("access_token", token);
                 const payload = jwt(token);
+                sessionStorage.setItem("access_token", token);
+                sessionStorage.setItem("expired_time", payload.exp);
                 resolve(payload.name);
             });
 
