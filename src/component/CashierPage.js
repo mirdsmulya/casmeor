@@ -7,6 +7,7 @@ import * as menuAction from '../actions/menuAction';
 import * as orderAction from '../actions/orderAction';
 import ConfirmModal from '../common/ConfirmModal';
 import Toastr from 'toastr';
+import { AuthCheck } from '../common/AuthCheck';
 
 
 class CashierPage extends React.Component {
@@ -88,15 +89,8 @@ class CashierPage extends React.Component {
         this.props.orderAction.deleteOrder(this.state.orderId, orders);
     }
 
-    userCheck() {
-        if (sessionStorage.getItem("currentUserLogin") == null ) {
-            this.props.history.push('/login');
-            Toastr.info("Login Required");  
-        }
-    }
-
     render() {
-        this.userCheck();
+        AuthCheck(this.props.history);
         return(
             <div className="main">
                 <Sidebar props={this.props.history}/>

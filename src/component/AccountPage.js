@@ -5,6 +5,7 @@ import Toastr from 'toastr';
 import AccountList from '../component/AccountList';
 import ListAccountApi from '../api/listAccountApi';
 import ConfirmModal from '../common/ConfirmModal';
+import { AuthCheck } from '../common/AuthCheck';
 
 class AccountPage extends React.Component {
     constructor(props, context) {
@@ -99,16 +100,9 @@ class AccountPage extends React.Component {
             } Toastr.error('Deleting user failed!');
         });
     }
-
-    userCheck() {
-        if (sessionStorage.getItem("currentUserLogin") == null ) {
-            this.props.history.push('/login');
-            Toastr.info("Login Required");
-        }
-    }
     
     render() {
-        this.userCheck();
+        AuthCheck(this.props.history);
         return(
             <div className="main">
                 <Sidebar props={this.props.history}/>

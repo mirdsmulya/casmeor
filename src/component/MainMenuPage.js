@@ -8,6 +8,7 @@ import {connect} from 'react-redux';
 import * as menuAction from '../actions/menuAction';
 import * as orderAction from '../actions/orderAction';
 import Toastr from 'toastr';
+import { AuthCheck } from '../common/AuthCheck';
 
 
 class MainMenuPage extends React.Component {
@@ -222,17 +223,8 @@ class MainMenuPage extends React.Component {
         Toastr.error('Order already made!'); 
 	}
 
-
-	userCheck() {
-        if (sessionStorage.getItem("currentUserLogin") == null ) {
-            this.props.history.push('/login');
-            Toastr.info("Login Required");  
-        }
-    }
-
-
 	render() {
-		this.userCheck();
+		AuthCheck(this.props.history);
 		return(
 			<div>
 				<MenuPage 

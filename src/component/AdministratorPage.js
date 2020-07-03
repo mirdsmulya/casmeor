@@ -3,8 +3,8 @@ import MenuPage from '../component/menuPage';
 import MenuApi from '../api/listMenuApi';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import Toastr from 'toastr';
 import * as menuAction from '../actions/menuAction';
+import { AuthCheck } from '../common/AuthCheck';
 
 
 class AdministratorPage extends React.Component {
@@ -58,18 +58,10 @@ class AdministratorPage extends React.Component {
         const newMenu = Object.assign({}, this.state.newMenu)
         newMenu[field] = event.target.value;
         return this.setState({newMenu: newMenu});
-
-    }
-
-    userCheck() {
-        if (sessionStorage.getItem("currentUserLogin") == null ) {
-            this.props.history.push('/login');
-            Toastr.info("Login Required");  
-        }
     }
 
     render() {
-        this.userCheck();
+        AuthCheck(this.props.history);
         return(
             <div>
                 <MenuPage 
