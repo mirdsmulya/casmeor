@@ -3,7 +3,7 @@ import { Link, IndexLink } from 'react-router';
 import Toastr from 'toastr';
 
 const Sidebar = (properties) => {
-    const username =  sessionStorage.getItem("currentUserLogin");
+    const username =  localStorage.getItem("currentUserLogin");
     const sidebar = username ? "sidebar" : "hide";
     return (
 
@@ -11,9 +11,9 @@ const Sidebar = (properties) => {
 				<div className="sticky ">
 				<div className="header-logo">
                 <div className="">
-                <button className={properties.signOut} onClick={() => { sessionStorage.removeItem("expired_time"); 
-                                                                        sessionStorage.removeItem("access_token");
-                                                                        sessionStorage.removeItem("currentUserLogin"); 
+                <button className={properties.signOut} onClick={() => { localStorage.removeItem("expired_time"); 
+                                                                        localStorage.removeItem("access_token");
+                                                                        localStorage.removeItem("currentUserLogin"); 
                                                                         properties.props.push('/login'); 
                                                                         Toastr.info("Sign Out");
                                                                         }}>Sign Out</button>

@@ -36,7 +36,7 @@ class LoginPage extends React.Component {
             if (!result) {
                 return Toastr.error('User or password might be wrong :(');          
             }
-            sessionStorage.setItem("currentUserLogin", result);
+            localStorage.setItem("currentUserLogin", result);
             Toastr.success('Login success! as ' + result);
             this.props.history.push('/');
         });      

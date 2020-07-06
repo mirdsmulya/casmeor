@@ -7,10 +7,10 @@ class ListAccountApi {
         return new Promise((resolve, reject) => {
             const access_token = {
                 headers: {
-                    'Authorization': 'Bearer '+ sessionStorage.getItem('access_token') 
+                    'Authorization': 'Bearer '+ localStorage.getItem('access_token') 
                 }
             };
-            const urlFetch = fetch('http://localhost:3000/account', access_token);
+            const urlFetch = fetch(process.env.BACKEND_IP+'account', access_token);
             urlFetch.then( res => {
                 if (res.status === 200) { return res.json(); } 
             }).then(result => resolve(result));
@@ -25,12 +25,12 @@ class ListAccountApi {
                 cache: 'no-cache', 
                 headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+ sessionStorage.getItem('access_token') 
+                'Authorization': 'Bearer '+ localStorage.getItem('access_token') 
                 },
                 body: JSON.stringify(newAccount) 
             };
             
-            const urlFetch = fetch('http://localhost:3000/account', postMethod);
+            const urlFetch = fetch(process.env.BACKEND_IP+'account', postMethod);
             urlFetch.then( res => {
                 const result = res.status === 201 ? resolve(true) : resolve(false);
             });
@@ -45,10 +45,10 @@ class ListAccountApi {
                 cache: 'no-cache', 
                 headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+ sessionStorage.getItem('access_token') 
+                'Authorization': 'Bearer '+ localStorage.getItem('access_token') 
                 }
             };
-            const urlFetch = fetch('http://localhost:3000/account/'+ nip, deleteMethod);
+            const urlFetch = fetch(process.env.BACKEND_IP+'account/'+ nip, deleteMethod);
             urlFetch.then( res => {
                 const result = res.status === 200 ? resolve(true) : resolve(false);
             });
@@ -68,14 +68,14 @@ class ListAccountApi {
                 body: JSON.stringify(credentials) 
             };
 
-            const urlFetch = fetch('http://localhost:3000/auth/login', postMethod);
+            const urlFetch = fetch(process.env.BACKEND_IP+'auth/login', postMethod);
             urlFetch.then( res => {
                 if (res.status == 201) {return res.json(); }
             }).then(result => {
                 const token = result.access_token;
                 const payload = jwt(token);
-                sessionStorage.setItem("access_token", token);
-                sessionStorage.setItem("expired_time", payload.exp);
+                localStorage.setItem("access_token", token);
+                localStorage.setItem("expired_time", payload.exp);
                 resolve(payload.name);
             });
 

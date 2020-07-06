@@ -146,7 +146,7 @@ class MainMenuPage extends React.Component {
 		const time = newDate.getTime();
 		const details = Object.assign({}, this.state.orderDetails);
 		const order = Object.assign([], this.state.dataOrder);
-        const cashier = sessionStorage.getItem('currentUserLogin');
+        const cashier = localStorage.getItem('currentUserLogin');
         const history = Object.assign({}, this.props.order.slice(-1)[0]);
         const orderNumb = history['orderNumber']+ 1;
 		const orderDetail = {

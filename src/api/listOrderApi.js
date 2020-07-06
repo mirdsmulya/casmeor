@@ -3,7 +3,7 @@ import Toastr from 'toastr';
 class OrderApi {
     static getAllOrder() {
         return new Promise((resolve, reject) => {
-            const urlFetch = fetch('http://localhost:3000/order');
+            const urlFetch = fetch(process.env.BACKEND_IP+'order');
             urlFetch.then( res => {
                 if (res.status === 200) { return res.json(); } else {Toastr.error('Failed load data');}
             }).then(result => resolve(result));
@@ -18,12 +18,12 @@ class OrderApi {
                 cache: 'no-cache', 
                 headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+ sessionStorage.getItem('access_token') 
+                'Authorization': 'Bearer '+ localStorage.getItem('access_token') 
                 },
                 body: JSON.stringify(newOrder) 
             };
             
-            const urlFetch = fetch('http://localhost:3000/order', postMethod);
+            const urlFetch = fetch(process.env.BACKEND_IP+'order', postMethod);
             urlFetch.then( res => {
                 if (res.status == 201 ) {
                     Toastr.success("Order saved!");
@@ -44,11 +44,11 @@ class OrderApi {
                 cache: 'no-cache', 
                 headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+ sessionStorage.getItem('access_token')
+                'Authorization': 'Bearer '+ localStorage.getItem('access_token')
                 },
                 body: JSON.stringify(updatedOrder) 
             };
-            const urlFetch = fetch('http://localhost:3000/order/'+ prevId, putMethod);
+            const urlFetch = fetch(process.env.BACKEND_IP+'order/'+ prevId, putMethod);
             urlFetch.then( res => {
                 if (res.status === 200) {
                     let orderIndex = orders.findIndex((a) => a.id == prevId);
@@ -63,7 +63,7 @@ class OrderApi {
 
     static getItemMenu(id) {
         return new Promise((resolve, reject) => {
-            const urlFetch = fetch('http://localhost:3000/order/'+ id);
+            const urlFetch = fetch(process.env.BACKEND_IP+'order/'+ id);
             urlFetch.then( res => {
                 if (res.status === 200) { return res.json(); }
             })
@@ -81,11 +81,11 @@ class OrderApi {
                 cache: 'no-cache', 
                 headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer '+ sessionStorage.getItem('access_token') 
+                'Authorization': 'Bearer '+ localStorage.getItem('access_token') 
 
                 }
             };
-            const urlFetch = fetch('http://localhost:3000/order/'+ orderId, deleteMethod);
+            const urlFetch = fetch(process.env.BACKEND_IP+'order/'+ orderId, deleteMethod);
             urlFetch.then( res => {
                 if (res.status === 200) {
                     const dataIndex = orders.findIndex( (order) => order.id == orderId);
@@ -95,7 +95,6 @@ class OrderApi {
                 } else {Toastr.error('Delete order failed');}
             });
         });
-
     }
 }
 

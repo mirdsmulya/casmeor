@@ -38,12 +38,11 @@ let menu = [
 ];
 
 
-
 class MenuApi {
-
+    
     static getAllMenu() {
         return new Promise((resolve, reject) => {
-            const urlFetch = fetch('http://localhost:3000/menu');
+            const urlFetch = fetch(process.env.BACKEND_IP+'menu');
             urlFetch.then( res => {
                 if (res.status == 200) {return res.json(); }
 
