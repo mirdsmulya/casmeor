@@ -1,10 +1,15 @@
 import webpack from 'webpack';
 import path from 'path';
+import dotenv from 'dotenv';
+
 
 export default {
   debug: true,
   devtool: 'inline-source-map',
   noInfo: false,
+  node: {
+    fs: "empty"
+ },
   entry: [
     'eventsource-polyfill', // necessary for hot reloading with IE
     'webpack-hot-middleware/client?reload=true', //note that it reloads the page if hot module reloading fails.
@@ -21,7 +26,10 @@ export default {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin()
+    new webpack.NoErrorsPlugin(),
+    new webpack.DefinePlugin({
+      'process.env': JSON.stringify(dotenv.config().parsed)
+    })
   ],
   module: {
     loaders: [
