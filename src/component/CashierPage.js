@@ -1,4 +1,4 @@
-import React from 'react';
+import React , { useRef } from 'react';
 import Sidebar from '../common/Sidebar';
 import OrderHistory from './OrderHistory';
 import {bindActionCreators} from 'redux';
@@ -8,6 +8,11 @@ import * as orderAction from '../actions/orderAction';
 import ConfirmModal from '../common/ConfirmModal';
 import Toastr from 'toastr';
 import { AuthCheck } from '../common/AuthCheck';
+import BillPage from '../common/BillPage';
+import OrderApi from '../api/listOrderApi';
+import { getItemMenu } from './MainMenuPage';
+import { getOrderState } from './MainMenuPage';
+
 
 
 class CashierPage extends React.Component {
@@ -20,7 +25,10 @@ class CashierPage extends React.Component {
             orderHistory: [],
             showModal: "none",
             orderId: "",
-            modalStatement: ""
+            modalStatement: "",
+            billData: {name:"", cashierIdentity:'', orderList:[], totalAmount:''},
+            hideBillModals: "none",
+            hideButton: "bill-button"
         };
     this.dataInputChange = this.dataInputChange.bind(this);
     this.addOrder = this.addOrder.bind(this);
@@ -28,6 +36,7 @@ class CashierPage extends React.Component {
     this.closeModal = this.closeModal.bind(this);
     this.yesClick = this.yesClick.bind(this);
     this.modalAction = this.modalAction.bind(this);
+    this.printBill = this.printBill.bind(this)
     }
 
     componentWillReceiveProps(nextProps) {
@@ -59,17 +68,31 @@ class CashierPage extends React.Component {
         let orderUpdate = Object.assign({}, {paymentStatus: "PAID"});
         orderUpdate = Object.assign({}, orderData, orderUpdate);
         this.props.orderAction.updateOrder(orderUpdate, orderHistory, orderUpdate.id);
-        this.setState({
-            orderDetails: [], 
-            dataOrder: [], 
-            totalAmount: [],
-            showModal: "modals",
-            modalStatement: "Print Bill?"
+        return OrderApi.getItemMenu(idOrder)
+        .then( (res) => {
+            const billData = getOrderState(orderUpdate.id, orderHistory);
+            const orderList = getItemMenu(res.orderList, this.props.menus);
+            billData['orderList'] = orderList;
+            this.setState({
+                orderDetails: [], 
+                dataOrder: [], 
+                totalAmount: [],
+                hideBillModals: "bill-modals",
+                billData: billData
+            });            
         });
+
     }
 
     closeModal() {
-        this.setState({showModal: 'none'});
+        this.setState({
+            showModal: 'none',
+            hideBillModals:'hide'
+        });
+    }
+
+    printBill() {
+        () => window.print();
     }
 
     modalAction(event) {
@@ -109,14 +132,20 @@ class CashierPage extends React.Component {
                     noClick={this.closeModal}
                     showModal={this.state.showModal}
                 />
+
+                <BillPage 
+                    dataOrder={this.state.billData}
+                    hideBillModals={this.state.hideBillModals}
+                    hideButton={this.state.hideButton}
+                    yesClick={this.printBill}
+                    noClick={this.closeModal}
+                    
+                />
+
+                
             </div>
         );
     }
-}
- 
-export function getOrder(idOrder, orderHistory) {
-    const findOrder = orderHistory.find((a) => a.id == idOrder);
-    return findOrder;
 }
 
 export function mapStateToProps(state,ownProps) {
@@ -124,7 +153,7 @@ export function mapStateToProps(state,ownProps) {
     const menus = state.menus;
     return {
         order: order,
-        menu: menus
+        menus: menus
     };
 }
 
