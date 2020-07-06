@@ -387,3 +387,53 @@
   top: 50%;
   transform: translate(-50%, -50%);
 } 
+
+// bill modal
+
+
+.bill-modals {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+}
+
+.bill-modal-box {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 25em;
+  min-height: 35em;
+  background: #f2f2f2;
+
+}
+
+.button-modal {
+  position: absolute;
+  bottom: 0.5em;
+  right: 0.5em;
+
+} 
+
+.modal-statement {
+  background-color: #f2f2f2;
+  height: 11em;
+  width: 24em;
+  position: relative;
+  left: 50%;
+  top: 40%;
+  transform: translate(-50%, -50%);
+}
+
+.bill-modal-text {
+  margin: 0.5em 2em;
+  margin-bottom: 2em;
+} 
+
+.bill-button {
+  margin: 2em;
+}
