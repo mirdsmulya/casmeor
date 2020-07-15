@@ -21,6 +21,39 @@
     
   }
 
+  @mixin slideAnimation($position,  $name, $duration, $direction) {
+    position: $position;
+    animation-name: $name;
+    animation-duration: $duration;
+    animation-direction: $direction;
+    animation-timing-function: ease;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes main-frame {
+    from {
+      left:0px;
+      top:1em;
+    }
+    to {
+      left:0px; 
+      top:0px;
+    }
+  }
+
+  @keyframes menu-box-frame {
+    from {
+      left:0px;
+      margin-top: 2em;
+      top:1em;
+    }
+    to {
+      left:0px; 
+      margin-top: 2px ;
+      top:0px;
+    }
+  }
+
 .main {
   border: 2px solid black;
   display: flex;
@@ -30,9 +63,8 @@
   min-height: 90em;
 }
 .sidebar {
-
+  // @include slideAnimation(relative, main-frame, 2s , normal );
   @include side-width;
-
   margin-top: 2px;
   padding-bottom: 20px; 
   
@@ -142,11 +174,13 @@
   position: sticky;
   //border: 8px solid blue;
   flex-grow: 5;
+  @include slideAnimation(relative, main-frame, 1s , normal );
   @include line-menu-width();
   
 }
 
 .menu-box {
+  @include slideAnimation(relative, menu-box-frame, 1.5s , normal );
   //@include border();
   background-color: #f8f8f8;
   border: 1px solid #cccccc;
@@ -302,26 +336,28 @@
 
 
 .login-box {
-  
+  border-radius: 1em;
   height: 12em;
   width: 32em;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
   position: sticky;
-  border: 2px solid black;
+  border: 2px solid ;
+  box-shadow: 5px 5px 0px 3px #aaaaaa;
 }
 
 .login-title-area {
+  border-radius: 1em;
   margin: 1em;
   width: 30em;
   height: 3em;
-  padding: 1em;
+  padding: 0.8em;
 }
 
 .login-user-pass-area {
   display: flex;
-  
+  border-radius: 1em;
   margin: 1em;
   width: 30em;
   height: 5.5em;
@@ -329,13 +365,34 @@
 }
 
 .login-button {
+  background-color: #008BD4;
+  color: white;
   height: 2em;
   bottom: 0%;
   position: relative;
+  -moz-border-radius:10px; /* Firefox */
+  -webkit-border-radius: 10px; /* Safari, Chrome */
+  -khtml-border-radius: 10px; /* KHTML */
+  border-radius: 10px; /* CSS3 */
+  border: 2px solid #008BD4;
+}
+
+.login-button:hover {
+  background-color: white;
+  color: #008BD4;
 }
 
 .margin-top {
   margin-top: 1.7em;
+}
+
+.inputForm {
+  -moz-border-radius:10px; /* Firefox */
+  -webkit-border-radius: 10px; /* Safari, Chrome */
+  -khtml-border-radius: 10px; /* KHTML */
+  border-radius: 10px; /* CSS3 */
+  border: 2px solid #e5e5e5;
+  margin-right: 0.5em;
 }
 
 

@@ -15,6 +15,7 @@ const LoginBox = ({onKeyPress, user, loginButton, onChange}) => {
                     value={user.username}
                     onChange={onChange}
                     onKeyPress={onKeyPress} 
+                    className="inputForm"
                 />
 
                 <TextInput 
@@ -24,6 +25,7 @@ const LoginBox = ({onKeyPress, user, loginButton, onChange}) => {
                     value={user.password}
                     onChange={onChange}
                     onKeyPress={onKeyPress}
+                    className="inputForm"
                 />
 
                 <button onKeyPress={onKeyPress} className="login-button margin-top" onClick={loginButton}>Login</button>
