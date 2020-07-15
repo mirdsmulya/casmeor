@@ -72,11 +72,15 @@ class ListAccountApi {
             urlFetch.then( res => {
                 if (res.status == 201) {return res.json(); }
             }).then(result => {
-                const token = result.access_token;
-                const payload = jwt(token);
-                localStorage.setItem("access_token", token);
-                localStorage.setItem("expired_time", payload.exp);
-                resolve(payload.name);
+                if (result) {
+                    const token = result.access_token;
+                    const payload = jwt(token);
+                    localStorage.setItem("access_token", token);
+                    localStorage.setItem("expired_time", payload.exp);
+                    resolve(payload.name);
+                }
+                resolve(false);
+                
             });
 
         });
