@@ -10,7 +10,7 @@ const Sidebar = (properties) => {
         <div className="fixed-sidebar ">
 				<div className="sticky ">
 				<div className="header-logo">
-                <div className="">
+                <div className="sidebar-signout">
                 <button className={properties.signOut} onClick={() => { localStorage.removeItem("expired_time"); 
                                                                         localStorage.removeItem("access_token");
                                                                         localStorage.removeItem("currentUserLogin"); 

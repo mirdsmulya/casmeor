@@ -33,7 +33,7 @@
   @keyframes main-frame {
     from {
       left:0px;
-      top:1em;
+      top:2em;
     }
     to {
       left:0px; 
@@ -152,6 +152,10 @@
   height: 2em;
   width: 15em;
   cursor: pointer;
+}
+
+.sidebar-signout {
+  margin: 1.5em 2em;
 }
 
 .margin-top {
@@ -327,6 +331,11 @@
   padding: 9em 7em;
 }
 
+.account-list {
+  @include slideAnimation(relative, menu-box-frame, 2s , normal );
+
+}
+
 .login-page {
   //background-color: blue;
   position: static;
@@ -409,6 +418,7 @@
 }
 
 .modal-box {
+  border-radius: 1em;
   position: fixed;
   left: 50%;
   top: 50%;
@@ -427,6 +437,7 @@
 } 
 
 .modal-statement {
+  border-radius: 1em;
   background-color: #f2f2f2;
   height: 11em;
   width: 24em;
